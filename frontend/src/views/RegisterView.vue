@@ -1,65 +1,74 @@
 <template>
-  <div class="register">
-    <form @submit.prevent="handleRegister">
-      <input v-model="name" type="text" placeholder="Nome" required />
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Senha" required />
-      <button type="submit">Registrar</button>
+  <div :class="styles['register-container']">
+    <form @submit.prevent="handleRegister" :class="styles['register-form']">
+      <img src="../assets/logo.png" alt="Logo" :class="styles['register-logo']" />
+      
+      <div :class="styles['register-form-row']">
+        <input v-model="email" type="email" placeholder="E-Mail" :class="styles['register-input']" required />
+        <input v-model="cpf" type="text" placeholder="CPF" :class="styles['register-input']" required />
+      </div>
+
+      <div :class="styles['register-form-row']">
+        <input v-model="password" type="password" placeholder="Senha" :class="styles['register-input']" required />
+        <input v-model="phone" type="text" placeholder="Telefone" :class="styles['register-input']" required />
+      </div>
+
+      <div :class="styles['register-form-row']">
+        <input v-model="confirmPassword" type="password" placeholder="Confirmar Senha" :class="styles['register-input']" required />
+        <select v-model="gender" :class="styles['register-select']" required>
+          <option value="" disabled selected>Sexo</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Feminino">Feminino</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      <button type="submit" :class="styles['register-button']">CADASTRAR</button>
+
+      <p :class="styles['register-login-link']">
+        Já tem conta? <router-link to="/login">Fazer login</router-link>
+      </p>
     </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios'; // <-- Adicione esta linha!
+import axios from 'axios';
+import styles from '@/assets/css/RegisterView.module.css';
 
 export default {
   data() {
     return {
-      name: '',
       email: '',
-      password: ''
+      cpf: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      gender: '',
+      styles
     };
   },
   methods: {
     async handleRegister() {
+      if (this.password !== this.confirmPassword) {
+        alert('As senhas não coincidem.');
+        return;
+      }
       const dados = {
-        name: this.name,
         email: this.email,
-        password: this.password
+        cpf: this.cpf,
+        telefone: this.phone,
+        senha: this.password,
+        sexo: this.gender
       };
       try {
         await axios.post('http://localhost:5000/register', dados);
         console.log('Registro feito com sucesso!');
-        // redireciona ou mostra mensagem de sucesso
+        this.$router.push('/login');
       } catch (error) {
         console.error('Erro no registro:', error);
       }
     }
   }
-}
+};
 </script>
-
-<style scoped>
-.register {
-  max-width: 400px;
-  margin: auto;
-  padding: 1rem;
-}
-input {
-  display: block;
-  margin-bottom: 1rem;
-  width: 100%;
-  padding: 0.5rem;
-}
-button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #1976D2;
-}
-</style>

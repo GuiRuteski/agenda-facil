@@ -1,14 +1,14 @@
 <template>
-  <div class="login">
-    <form @submit.prevent="handleLogin">
-      <img src="../assets/logo.png" alt="Logo" class="logo" />
+  <div :class="styles['login-container']">
+    <form :class="styles['login-form']" @submit.prevent="handleLogin">
+      <img src="../assets/logo.png" alt="Logo" :class="styles['login-logo']" />
 
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Senha" required />
-      <p class="forgot-password">Esqueci minha senha</p>
-      <button type="submit">Entrar</button>
-      <p class="create-account">
-         Ainda não tem conta? <router-link to="/register">Clique para criar uma conta</router-link>
+      <input v-model="email" type="email" placeholder="Email" :class="styles['login-input']" required />
+      <input v-model="password" type="password" placeholder="Senha" :class="styles['login-input']" required />
+      <p :class="styles['login-forgot-password']">Esqueci minha senha</p>
+      <button type="submit" :class="styles['login-button']">Entrar</button>
+      <p :class="styles['login-create-account']">
+        Ainda não tem conta? <router-link to="/register">Clique para criar uma conta</router-link>
       </p>
     </form>
   </div>
@@ -16,12 +16,14 @@
 
 <script>
 import axios from 'axios';
+import styles from '@/assets/css/LoginView.module.css';
 
 export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      styles
     };
   },
   methods: {
@@ -43,5 +45,3 @@ export default {
   }
 };
 </script>
-
-<style src="@/assets/css/LoginView.css"></style>
