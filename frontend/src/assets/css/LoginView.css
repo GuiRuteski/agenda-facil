@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #d9d9d9;
+    background-color: #FFFFFF;
     height: 100vh;
   }
   
@@ -23,11 +23,11 @@ body {
   }
 
   form {
-    background-color: #173A6E;
+    background-color: #254370;
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 450px;
     height: 500px;
     overflow: hidden;
     display: flex;
@@ -68,7 +68,7 @@ body {
     width: 80%;
     padding: 0.75rem 1rem;
     background-color: white;
-    color: #173A6E;
+    color: #254370;
     font-weight: bold;
     border: 2px solid white;
     border-radius: 8px;
@@ -80,12 +80,12 @@ body {
   
   button:hover {
     background-color: #d9d9d9;
-    color: #173A6E;
+    color: #254370;
   }
 
   button:active {
     background-color: #c0c0c0;
-    color: #173A6E;
+    color: #254370;
   }
   
   .forgot-password {
