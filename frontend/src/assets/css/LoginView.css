@@ -1,0 +1,138 @@
+/* src/assets/css/LoginView.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #d9d9d9;
+    height: 100vh;
+  }
+  
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .logo {
+    width: 350px;
+    height: auto;
+    display: block;
+    margin: 40px auto 90px auto;
+  }
+
+  form {
+    background-color: #173A6E;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  form h1 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+  
+  input {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid white;
+    border-radius: 8px;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  input::placeholder {
+    font-family: 'Inter', sans-serif;
+    color: #e0e0e0;
+    opacity: 1;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #d9d9d9;
+  }
+  
+  button {
+    font-family: 'Inter', sans-serif;
+    width: 80%;
+    padding: 0.75rem 1rem;
+    background-color: white;
+    color: #173A6E;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 1.3rem;
+  }
+  
+  button:hover {
+    background-color: #d9d9d9;
+    color: #173A6E;
+  }
+
+  button:active {
+    background-color: #c0c0c0;
+    color: #173A6E;
+  }
+  
+  .forgot-password {
+    color: white;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  .forgot-password {
+    font-family: 'Inter', sans-serif;
+    align-self: flex-end;
+    margin-top: -0.5rem;
+    margin-bottom: 1.3rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  .create-account {
+    font-family: 'Inter', sans-serif;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: white;
+    text-align: center;
+}
+
+.create-account a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+  /* Responsivo */
+  @media (max-width: 400px) {
+    form {
+      width: 90%;
+      padding: 1.5rem;
+    }
+    input, button {
+      font-size: 0.9rem;
+    }
+  }
+  

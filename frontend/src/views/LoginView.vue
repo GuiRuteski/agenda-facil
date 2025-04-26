@@ -1,9 +1,15 @@
 <template>
   <div class="login">
     <form @submit.prevent="handleLogin">
+      <img src="../assets/logo.png" alt="Logo" class="logo" />
+
       <input v-model="email" type="email" placeholder="Email" required />
       <input v-model="password" type="password" placeholder="Senha" required />
+      <p class="forgot-password">Esqueci minha senha</p>
       <button type="submit">Entrar</button>
+      <p class="create-account">
+         Ainda não tem conta? <router-link to="/register">Clique para criar uma conta</router-link>
+      </p>
     </form>
   </div>
 </template>
@@ -38,27 +44,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.login {
-  max-width: 400px;
-  margin: auto;
-  padding: 1rem;
-}
-input {
-  display: block;
-  margin-bottom: 1rem;
-  width: 100%;
-  padding: 0.5rem;
-}
-button {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #45a049;
-}
-</style>
+<style src="@/assets/css/LoginView.css"></style>
