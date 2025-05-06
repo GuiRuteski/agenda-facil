@@ -6,7 +6,7 @@
       <input v-model="email" type="email" placeholder="Email" :class="styles['login-input']" required />
       <input v-model="password" type="password" placeholder="Senha" :class="styles['login-input']" required />
       <p :class="styles['login-forgot-password']">Esqueci minha senha</p>
-      <button type="submit" :class="styles['login-button']">Entrar</button>
+      <button type="submit" :class="styles['login-button']">ENTRAR</button>
       <p :class="styles['login-create-account']">
         Ainda não tem conta? <router-link to="/register">Clique para criar uma conta</router-link>
       </p>

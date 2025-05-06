@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 // Importa as views criadas
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
-import HomeView from '@/views/HomeView.vue';
+import HomeView from '../views/HomeView.vue';
 
 // Aqui futuramente podemos importar o Painel (dashboard) e outras rotas protegidas
 
