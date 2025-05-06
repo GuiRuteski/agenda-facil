@@ -1,11 +1,14 @@
 <template>
   <div :class="styles.container">
     
-    <!-- ===== SIDEBAR (Menu Lateral) ===== -->
+    <!-- ==== SIDEBAR - Menu Lateral ==== -->
     <aside :class="styles.sidebar">
+      <!-- Logo -->
       <div :class="styles.logoBox">
         <img :src="require('../assets/logo.png')" alt="Logo Agenda Fácil" :class="styles.logo" />
       </div>
+
+      <!-- Lista de Itens do Menu -->
       <ul :class="styles.menuList">
         <li 
           v-for="item in menuItems" 
@@ -18,52 +21,49 @@
       </ul>
     </aside>
 
-    <!-- ===== MAIN CONTENT ===== -->
+    <!-- ==== MAIN CONTENT ==== -->
     <main :class="styles.mainContent">
       
-      <!-- TOPO: Barra do Usuário + Calendário -->
+      <!-- Topo com informações do usuário e calendário -->
       <div :class="styles.headerRow">
+        
+        <!-- Informações do usuário -->
         <div :class="styles.topBar">
-          <h1>Olá, Sr. {{ userName }}!</h1>
+          <div :class="styles.userInfo">
+            <h1>Olá, Sr. {{ userName }}!</h1>
+            <div :class="styles.userUnderlineBox">
+              <div :class="[styles.userUnderline, styles.short]"></div>
+              <div :class="[styles.userUnderline, styles.long]"></div>
+            </div>
+          </div>
           <img :src="userPhoto" alt="Foto do usuário" :class="styles.userPhoto" />
         </div>
+
+        <!-- Calendário (em desenvolvimento) -->
         <div :class="styles.calendarBox">
           <h2>Calendário</h2>
           <p>[Calendário - Em desenvolvimento]</p>
         </div>
       </div>
 
-      <!-- Sublinhos decorativos -->
-      <div :class="styles.userUnderlineBox">
-        <div :class="[styles.userUnderline, styles.short]"></div>
-        <div :class="[styles.userUnderline, styles.long]"></div>
-      </div>
-
-      <!-- Corpo: Mensagens e Agenda lado a lado -->
+      <!-- Corpo principal: mensagens e agenda -->
       <div :class="styles.contentBody">
         
-        <!-- MENSAGENS -->
+        <!-- Seção de Mensagens -->
         <section :class="styles.chatSection">
           <h2>Mensagens</h2>
           <div :class="styles.messageCardsContainer">
-            <div :class="styles.messageCard">
+            <div :class="styles.messageCard" v-for="(msg, i) in messages" :key="i">
               <div class="msg-header">
-                <img :src="require('../assets/User.jpg')" alt="Dr. João Pereira" class="msg-avatar" />
-                <strong>Dr. João Pereira</strong>
+                <img :src="require('../assets/User.jpg')" alt="Avatar" class="msg-avatar" />
+                <strong>{{ msg.doctor }}</strong>
               </div>
-              <p>Sua consulta está agendada para HOJE às 08:00</p>
-            </div>
-            <div :class="styles.messageCard">
-              <div class="msg-header">
-                <img :src="require('../assets/User.jpg')" alt="Dra. Ana Oliveira" class="msg-avatar" />
-                <strong>Dra. Ana Oliveira</strong>
-              </div>
-              <p>Sua consulta está agendada para HOJE às 10:30</p>
+              <p>{{ msg.message }}</p>
             </div>
           </div>
         </section>
 
-        <!-- AGENDA -->
+        <!-- Seção da Agenda -->
         <section :class="styles.agendaSection">
           <h2>Agenda</h2>
           <div :class="styles.agendaBox">
@@ -94,7 +94,11 @@ export default {
         'CONFIGURAÇÕES',
         'SAIR'
       ],
-      activeMenu: 'INÍCIO'
+      activeMenu: 'INÍCIO',
+      messages: [
+        { doctor: 'Dr. João Pereira', message: 'Sua consulta está agendada para HOJE às 08:00' },
+        { doctor: 'Dra. Ana Oliveira', message: 'Sua consulta está agendada para HOJE às 10:30' }
+      ]
     };
   },
   methods: {

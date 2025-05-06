@@ -1,9 +1,11 @@
+/* === LAYOUT PRINCIPAL === */
 .container {
   display: flex;
   height: 100vh;
   font-family: 'Inter', sans-serif;
 }
 
+/* === SIDEBAR === */
 .sidebar {
   width: 220px;
   background-color: #254370;
@@ -42,20 +44,15 @@
   text-align: center; 
 }
 
-.menuItem:hover {
-  background-color: #1f3a63; 
-  color: #f0f2f5; 
-  transform: translateY(-2px); 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-}
-
+.menuItem:hover,
 .activeMenu {
-  background-color: #1f3a63; 
-  color: #f0f2f5; 
+  background-color: #1f3a63;
+  color: #f0f2f5;
+  transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px); 
 }
 
+/* === CONTEÚDO PRINCIPAL === */
 .mainContent {
   flex: 1;
   padding: 1.5rem;
@@ -64,17 +61,16 @@
   flex-direction: column;
 }
 
+/* TOPO COM USUÁRIO + CALENDÁRIO */
 .headerRow {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
   gap: 2rem;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
 .topBar {
-  background-color: #28f076;
   border-radius: 10px;
   padding: 2.5rem;
   width: 800px;
@@ -83,52 +79,64 @@
   align-items: center;
 }
 
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.userInfo h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #101E33;
+}
+
 .userPhoto {
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
 }
 
+.userUnderlineBox {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.userUnderline {
+  height: 8px;
+  background-color: #101E33;
+  border-radius: 4px;
+}
+
+.short {
+  width: 350px;
+}
+
+.long {
+  width: 410px;
+}
+
+/* CALENDÁRIO */
 .calendarBox {
   width: 300px;
-  background-color: #ff1e1e;
+  background-color: #535353;
   border-radius: 10px;
   padding: 2.5rem;
   color: white;
 }
 
-.userUnderlineBox {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0.5rem 0 1rem 0;
-}
-
-.userUnderline {
-  height: 5px;
-  background-color: #333;
-  margin: 0.1rem 0;
-  border-radius: 4px;
-}
-
-.short {
-  width: 50px;
-}
-
-.long {
-  width: 100px;
-}
-
+/* CORPO PRINCIPAL */
 .contentBody {
   display: flex;
-  flex-direction: row; /* <- Importante para ficar lado a lado */
   gap: 2rem;
 }
 
+/* MENSAGENS */
 .chatSection {
-  background-color: #2317c5;
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 2.5rem;
   border-radius: 10px;
   width: 800px;
@@ -163,12 +171,12 @@
   border-radius: 50%;
 }
 
+/* AGENDA */
 .agendaSection {
-  background-color: #16b1d8;
+  background-color: #535353;
   border-radius: 10px;
   padding: 2.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 300px;
+  color: white;
 }
-
-
