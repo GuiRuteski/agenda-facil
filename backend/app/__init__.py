@@ -1,14 +1,21 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from .config import Config  # Importação relativa corrigida
 
-# Inicialize o objeto db de forma global para a aplicação
-db = SQLAlchemy()
-
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/agenda_facil'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(config_class)
     
-    db.init_app(app)  # Passa a app para o db
-
+    # Inicializa extensões
+    from .extensions import db, migrate, jwt
+    db.init_app(app)
+    migrate.init_app(app, db)
+    jwt.init_app(app)
+    
+    # Registra blueprints
+    from routes import user, paciente, funcionario, agendamento
+    app.register_blueprint(user.bp)
+    app.register_blueprint(paciente.bp)
+    app.register_blueprint(funcionario.bp)
+    app.register_blueprint(agendamento.bp)
+    
     return app

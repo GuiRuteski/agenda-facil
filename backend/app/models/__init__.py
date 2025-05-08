@@ -1,8 +1,14 @@
-from .paciente import Paciente  # Apenas importa a classe Paciente
-from . import db  # Certifique-se de que o db foi importado aqui sem causar cíclicos
+from .user import Usuario
+from .paciente import Paciente
+from .funcionario import Funcionario, TipoFuncionario
+# Dentro de app/routes/paciente.py por exemplo:
+from app.models.agendamento import Agendamento, StatusAgendamento
 
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-from app.models.paciente import Paciente
+__all__ = [
+    'Usuario',
+    'Paciente',
+    'Funcionario',
+    'TipoFuncionario',
+    'Agendamento',
+    'StatusAgendamento'
+]
