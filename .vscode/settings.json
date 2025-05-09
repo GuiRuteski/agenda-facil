@@ -1,6 +1,9 @@
 {
     "python.analysis.extraPaths": [
+
         "./backend/agenda_facil",
-        "./backend/app"
-    ]
+        "./backend/app",
+
+    "./backend/agenda_facil"
+]
 }
