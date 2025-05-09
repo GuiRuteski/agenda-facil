@@ -1,5 +1,7 @@
+from datetime import datetime
 from enum import Enum
 from app.extensions import db
+
 
 class TipoFuncionario(Enum):
     MEDICO = 'médico'

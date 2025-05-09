@@ -1,21 +1,27 @@
 from flask import Flask
-from .config import Config  # Importação relativa corrigida
+from flask_cors import CORS
+from app.extensions import db, migrate, jwt
+from app.config import Config
 
-def create_app(config_class=Config):
+from routes.user import user_bp
+from routes.paciente_routes import paciente_bp
+from routes.funcionario_routes import funcionario_bp
+from routes.agendamento_routes import agendamento_bp
+
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_class)
-    
-    # Inicializa extensões
-    from .extensions import db, migrate, jwt
+    app.config.from_object(Config)
+
+    # Extensões
+    CORS(app)
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    
-    # Registra blueprints
-    from routes import user, paciente, funcionario, agendamento
-    app.register_blueprint(user.bp)
-    app.register_blueprint(paciente.bp)
-    app.register_blueprint(funcionario.bp)
-    app.register_blueprint(agendamento.bp)
-    
+
+    # Blueprints
+    app.register_blueprint(user_bp)
+    app.register_blueprint(paciente_bp)
+    app.register_blueprint(funcionario_bp)
+    app.register_blueprint(agendamento_bp)
+
     return app

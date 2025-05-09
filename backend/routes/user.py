@@ -4,9 +4,9 @@ from app.extensions import db
 from app.models.user import Usuario
 from app.models.funcionario import Funcionario
 
-bp = Blueprint('user', __name__, url_prefix='/api/auth')
+user_bp = Blueprint('user', __name__, url_prefix='/api/auth')
 
-@bp.route('/login', methods=['POST'])
+@user_bp.route('/login', methods=['POST'])
 def login():
     email = request.json.get('email', None)
     senha = request.json.get('senha', None)
@@ -19,14 +19,13 @@ def login():
     if not usuario or not usuario.check_senha(senha):
         return jsonify({"message": "Credenciais inválidas"}), 401
     
-    # Verifica se o usuário está associado a um funcionário ativo
     if usuario.funcionario and not usuario.funcionario.ativo:
         return jsonify({"message": "Seu acesso está desativado"}), 403
     
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token), 200
 
-@bp.route('/me', methods=['GET'])
+@user_bp.route('/me', methods=['GET'])
 @jwt_required()
 def me():
     current_user = get_jwt_identity()
@@ -42,13 +41,12 @@ def me():
     
     return jsonify(response), 200
 
-@bp.route('/funcionarios/<int:funcionario_id>', methods=['POST'])
+@user_bp.route('/funcionarios/<int:funcionario_id>', methods=['POST'])
 @jwt_required()
 def criar_usuario_funcionario(funcionario_id):
     current_user = get_jwt_identity()
     usuario_admin = Usuario.query.filter_by(email=current_user).first()
     
-    # Verifica se é administrador
     if not usuario_admin or not usuario_admin.funcionario or usuario_admin.funcionario.tipo != 'administrador':
         return jsonify({'message': 'Acesso negado'}), 403
     
@@ -73,7 +71,7 @@ def criar_usuario_funcionario(funcionario_id):
     
     return jsonify(usuario.to_dict()), 201
 
-@bp.route('/alterar-senha', methods=['POST'])
+@user_bp.route('/alterar-senha', methods=['POST'])
 @jwt_required()
 def alterar_senha():
     current_user = get_jwt_identity()

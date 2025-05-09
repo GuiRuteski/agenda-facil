@@ -1,4 +1,5 @@
 from app.extensions import db
+from datetime import datetime
 
 class Paciente(db.Model):
     __tablename__ = 'pacientes'
