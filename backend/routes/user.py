@@ -6,8 +6,40 @@ from app.models.funcionario import Funcionario
 
 user_bp = Blueprint('user', __name__, url_prefix='/api/auth')
 
+
 @user_bp.route('/login', methods=['POST'])
 def login():
+    """
+    Login de usuário
+    ---
+    tags:
+      - Autenticação
+    parameters:
+      - in: body
+        name: credentials
+        schema:
+          type: object
+          required:
+            - email
+            - senha
+          properties:
+            email:
+              type: string
+            senha:
+              type: string
+    responses:
+      200:
+        description: Token de acesso gerado com sucesso
+        schema:
+          type: object
+          properties:
+            access_token:
+              type: string
+      400:
+        description: Campos obrigatórios ausentes
+      401:
+        description: Credenciais inválidas
+    """
     email = request.json.get('email', None)
     senha = request.json.get('senha', None)
     
@@ -25,9 +57,23 @@ def login():
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token), 200
 
+
 @user_bp.route('/me', methods=['GET'])
 @jwt_required()
 def me():
+    """
+    Retorna os dados do usuário logado
+    ---
+    tags:
+      - Autenticação
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: Dados do usuário
+      404:
+        description: Usuário não encontrado
+    """
     current_user = get_jwt_identity()
     usuario = Usuario.query.filter_by(email=current_user).first()
     
@@ -41,9 +87,42 @@ def me():
     
     return jsonify(response), 200
 
+
 @user_bp.route('/funcionarios/<int:funcionario_id>', methods=['POST'])
 @jwt_required()
 def criar_usuario_funcionario(funcionario_id):
+    """
+    Criação de conta de acesso para um funcionário
+    ---
+    tags:
+      - Administração
+    security:
+      - Bearer: []
+    parameters:
+      - name: funcionario_id
+        in: path
+        required: true
+        type: integer
+      - in: body
+        name: dados
+        schema:
+          type: object
+          required:
+            - email
+            - senha
+          properties:
+            email:
+              type: string
+            senha:
+              type: string
+    responses:
+      201:
+        description: Usuário criado com sucesso
+      400:
+        description: Email já utilizado ou funcionário já possui usuário
+      403:
+        description: Acesso negado
+    """
     current_user = get_jwt_identity()
     usuario_admin = Usuario.query.filter_by(email=current_user).first()
     
@@ -71,9 +150,38 @@ def criar_usuario_funcionario(funcionario_id):
     
     return jsonify(usuario.to_dict()), 201
 
+
 @user_bp.route('/alterar-senha', methods=['POST'])
 @jwt_required()
 def alterar_senha():
+    """
+    Alteração de senha do usuário logado
+    ---
+    tags:
+      - Autenticação
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        name: dados
+        schema:
+          type: object
+          required:
+            - senha_atual
+            - nova_senha
+          properties:
+            senha_atual:
+              type: string
+            nova_senha:
+              type: string
+    responses:
+      200:
+        description: Senha alterada com sucesso
+      400:
+        description: Erro na validação ou senha atual incorreta
+      404:
+        description: Usuário não encontrado
+    """
     current_user = get_jwt_identity()
     usuario = Usuario.query.filter_by(email=current_user).first()
     

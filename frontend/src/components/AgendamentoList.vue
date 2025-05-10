@@ -8,6 +8,7 @@
         <strong>Profissional:</strong> {{ getProfissionalNome(a.profissional_id) }} —
         <strong>Data:</strong> {{ formatarDataHora(a.data_hora) }} —
         <strong>Status:</strong> {{ a.status }}
+        <button @click="cancelarAgendamento(a.id)" style="margin-left: 10px;">Cancelar</button>
       </li>
     </ul>
 
@@ -69,7 +70,33 @@ export default {
     getProfissionalNome(id) {
       const profissional = this.profissionais.find(f => f.id === id);
       return profissional ? profissional.nome : `ID ${id}`;
+    },
+    async cancelarAgendamento(id) {
+      const confirmar = confirm("Tem certeza que deseja cancelar este agendamento?");
+      if (!confirmar) return;
+
+      try {
+        await axios.delete(`http://localhost:5000/api/agendamentos/${id}`);
+        this.agendamentos = this.agendamentos.filter(a => a.id !== id);
+      } catch (error) {
+        console.error('Erro ao cancelar agendamento:', error);
+        alert('Erro ao cancelar agendamento.');
+      }
     }
   }
 };
 </script>
+
+<style scoped>
+button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #c0392b;
+}
+</style>

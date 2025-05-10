@@ -28,20 +28,20 @@ export default {
   },
   methods: {
     async handleLogin() {
-      try {
-        const response = await axios.post('http://localhost:5000/login', {
-          email: this.email,
-          password: this.password
-        });
-        const token = response.data.access_token;
-        localStorage.setItem('token', token);
-        console.log('Login bem-sucedido. Token salvo.');
-        this.$router.push('/home'); // ou outra rota que você queira redirecionar
-      } catch (error) {
-        console.error('Erro no login:', error);
-        alert('Login inválido. Verifique o email e senha.');
-      }
-    }
+  try {
+    const response = await axios.post('http://localhost:5000/api/auth/login', {
+      email: this.email,
+      senha: this.password
+    });
+    const token = response.data.access_token;
+    localStorage.setItem('token', token);
+    this.$router.push('/painel'); // redireciona para Painel
+  } catch (error) {
+    console.error('Erro no login:', error);
+    alert(error.response?.data?.message || 'Login inválido. Verifique o email e senha.');
+  }
+}
+
   }
 };
 </script>
