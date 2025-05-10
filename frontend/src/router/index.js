@@ -35,6 +35,11 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: HomeView
+  },
+  {
+  path: '/profissionais',
+  component: () => import('@/views/ProfissionaisView.vue'),
+  meta: { requiresAuth: true }
   }
 ]
 
