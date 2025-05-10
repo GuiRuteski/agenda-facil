@@ -38,7 +38,7 @@ const routes = [
   },
   {
   path: '/profissionais',
-  component: () => import('@/views/ProfissionaisView.vue'),
+  component: () => import('@/views/ProfessionalView.vue'),
   meta: { requiresAuth: true }
   }
 ]
