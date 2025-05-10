@@ -1,12 +1,13 @@
-/* === LAYOUT PRINCIPAL === */
-.container {
+/* Container principal que ocupa toda a altura da tela e usa flexbox para dividir sidebar e conteúdo */
+.home-container {
   display: flex;
   height: 100vh;
+  overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
 
-/* === SIDEBAR === */
-.sidebar {
+/* Barra lateral fixa à esquerda */
+.home-sidebar {
   width: 220px;
   background-color: #254370;
   color: white;
@@ -16,167 +17,225 @@
   padding-top: 1rem;
 }
 
-.logoBox {
+/* Espaço que contém a logo */
+.home-logo-box {
   margin-bottom: 2rem;
 }
 
-.logo {
+/* Estilo da imagem da logo */
+.home-logo {
   width: 120px;
   height: auto;
 }
 
-.menuList {
+/* Lista do menu (remove marcadores e espaçamentos padrão) */
+.home-menu-list {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
-.menuItem {
-  margin: 10px 0; 
+/* Estilo dos itens do menu da sidebar */
+.home-menu-item {
+  margin: 10px 0;
   cursor: pointer;
   font-size: 16px;
-  font-weight: bold; 
+  font-weight: bold;
   color: white;
   padding: 12px 20px;
-  border-radius: 8px; 
-  background-color: #254370; 
+  border-radius: 8px;
+  background-color: #254370;
   transition: all 0.3s ease;
-  text-align: center; 
+  text-align: center;
 }
 
-.menuItem:hover,
-.activeMenu {
+/* Efeito ao passar o mouse sobre o item do menu */
+.home-menu-item:hover {
   background-color: #1f3a63;
   color: #f0f2f5;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* === CONTEÚDO PRINCIPAL === */
-.mainContent {
+/* Estilo aplicado ao item ativo do menu */
+.home-active-menu {
+  background-color: #1f3a63;
+  color: #f0f2f5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Área principal do conteúdo (à direita da sidebar) */
+.home-main-content {
   flex: 1;
   padding: 1.5rem;
-  background-color: #f5f5f5;
+  background-color: #D0D0D0;
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Evita estouro de conteúdo flexível */
 }
 
-/* TOPO COM USUÁRIO + CALENDÁRIO */
-.headerRow {
+/* Linha superior contendo saudação e calendário */
+.home-header-row {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: nowrap;
   gap: 2rem;
-  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-.topBar {
+/* Barra superior com fundo e espaçamento */
+.home-top-bar {
+  flex: 1;
+  height: 160px;
   border-radius: 10px;
   padding: 2.5rem;
-  width: 800px;
+  background-color: #D0D0D0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.userInfo {
+/* Container com as informações do usuário */
+.home-user-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.userInfo h1 {
+/* Título de saudação ao usuário */
+.home-user-info h1 {
   font-size: 3.5rem;
   margin: 0;
   color: #101E33;
 }
 
-.userPhoto {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.userUnderlineBox {
+/* Caixa que contém os dois traços decorativos abaixo do nome */
+.home-user-underline-box {
   display: flex;
   flex-direction: column-reverse;
   gap: 5px;
   margin-top: 2px;
 }
 
-.userUnderline {
+/* Linha decorativa abaixo do nome do usuário */
+.home-user-underline {
   height: 8px;
   background-color: #101E33;
   border-radius: 4px;
 }
 
-.short {
+/* Linha curta decorativa */
+.home-user-underline.short {
   width: 350px;
 }
 
-.long {
+/* Linha longa decorativa */
+.home-user-underline.long {
   width: 410px;
 }
 
-/* CALENDÁRIO */
-.calendarBox {
-  width: 300px;
-  background-color: #535353;
-  border-radius: 10px;
-  padding: 2.5rem;
-  color: white;
+/* Estilo da imagem do usuário */
+.home-user-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-/* CORPO PRINCIPAL */
-.contentBody {
+/* Caixa do calendário (lado direito do cabeçalho) */
+.home-calendar-box {
+  width: 300px;
+  height: 160px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 2.5rem;
+  color: #101E33;
+}
+
+/* Corpo do conteúdo principal abaixo do cabeçalho */
+.home-content-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+/* Seção da esquerda (chat/mensagens) */
+.home-chat-section {
+  flex: 1;
+  background-color: #D0D0D0;
+  padding: 2.5rem;
+  border-radius: 10px;
+}
+
+/* Container dos cartões de mensagens dos médicos */
+.home-message-cards-container {
   display: flex;
   gap: 2rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 1rem;
 }
 
-/* MENSAGENS */
-.chatSection {
-  color: rgb(0, 0, 0);
-  padding: 2.5rem;
-  border-radius: 10px;
-  width: 800px;
-}
-
-.messageCardsContainer {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-
-.messageCard {
+/* Cartão individual de mensagens de um médico */
+.home-message-card {
+  width: 300px;
+  min-width: 300px;
+  flex-shrink: 0;
   background-color: white;
-  color: black;
+  color: #101E33;
   border-radius: 10px;
-  padding: 1rem;
-  flex: 1;
-  min-width: 250px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.msg-header {
+/* Cabeçalho do cartão com nome e avatar do médico */
+.home-msg-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.msg-avatar {
+/* Avatar do médico */
+.home-msg-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
-/* AGENDA */
-.agendaSection {
-  background-color: #535353;
+/* Balão de mensagem */
+.home-message-bubble {
+  background-color: #D9D9D9;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+/* Texto da mensagem */
+.home-message-bubble p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Data da mensagem */
+.home-message-date {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: #101E33;
+  margin-top: 0.25rem;
+}
+
+/* Seção da direita (agenda) */
+.home-agenda-section {
+  width: 300px;
+  background-color: white;
   border-radius: 10px;
   padding: 2.5rem;
+  color: #101E33;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  color: white;
 }
