@@ -1,91 +1,72 @@
 <template>
-  <!-- Container principal da página -->
   <div :class="styles['home-container']">
-    
     <!-- Barra lateral (sidebar) -->
     <aside :class="styles['home-sidebar']">
-      
       <!-- Caixa do logotipo -->
       <div :class="styles['home-logo-box']">
-        <!-- Imagem do logotipo -->
         <img 
           :src="require('../assets/logo.png')" 
           alt="Logo Agenda Fácil" 
           :class="styles['home-logo']" 
         />
       </div>
-      
+
       <!-- Lista de menus laterais -->
       <ul :class="styles['home-menu-list']">
-        <!-- Cada item do menu -->
         <li 
           v-for="item in menuItems" 
-          :key="item" 
-          :class="[styles['home-menu-item'], activeMenu === item ? styles['home-active-menu'] : '']"
-          @click="setActiveMenu(item)"> <!-- Define o item como ativo ao clicar -->
-          {{ item }}
+          :key="item.label" 
+          :class="[styles['home-menu-item'], activeMenu === item.label ? styles['home-active-menu'] : '']"
+          role="button"
+          tabindex="0"
+          @click="item.label === 'SAIR' ? logout() : setActiveMenu(item.label)"
+        >
+          <i :class="[item.icon]" style="margin-right: 10px;"></i>
+          {{ item.label }}
         </li>
       </ul>
     </aside>
 
     <!-- Conteúdo principal da página -->
     <main :class="styles['home-main-content']">
-      
-      <!-- Linha superior com saudação e calendário -->
       <div :class="styles['home-header-row']">
-        
-        <!-- Barra superior com dados do usuário -->
         <div :class="styles['home-top-bar']">
-          
-          <!-- Informações do usuário -->
           <div :class="styles['home-user-info']">
             <h1>Olá, Sr. {{ userName }}!</h1>
-            
-            <!-- Linhas decorativas abaixo do nome -->
             <div :class="styles['home-user-underline-box']">
               <div :class="[styles['home-user-underline'], styles.short]"></div>
               <div :class="[styles['home-user-underline'], styles.long]"></div>
             </div>
           </div>
-
-          <!-- Foto do usuário -->
           <img 
-            :src="userPhoto" 
+            :src="userPhoto"
+            @error="userPhoto = require('../assets/default-user.jpg')"
             alt="Foto do usuário" 
             :class="styles['home-user-photo']" 
           />
         </div>
 
-        <!-- Caixa do calendário (em desenvolvimento) -->
         <div :class="styles['home-calendar-box']">
           <h2>Calendário</h2>
           <p>[Calendário - Em desenvolvimento]</p>
         </div>
       </div>
 
-      <!-- Corpo principal com mensagens e agenda -->
       <div :class="styles['home-content-body']">
-
-        <!-- Seção de mensagens -->
         <section :class="styles['home-chat-section']">
           <h2>Mensagens:</h2>
 
-          <!-- Container dos cards de mensagens -->
           <div :class="styles['home-message-cards-container']">
-            
-            <!-- Cada card representa um profissional com mensagens -->
             <div 
               v-for="(doctor, i) in messages" 
               :key="i" 
               :class="styles['home-message-card']"
             >
-              <!-- Cabeçalho do card com avatar e nome -->
               <div :class="styles['home-msg-header']">
                 <img :src="doctor.avatar" alt="Avatar" :class="styles['home-msg-avatar']" />
                 <strong>{{ doctor.name }}</strong>
               </div>
 
-              <!-- Lista de mensagens do profissional -->
               <div 
                 v-for="(msg, j) in doctor.messages" 
                 :key="j" 
@@ -98,7 +79,6 @@
           </div>
         </section>
 
-        <!-- Seção da agenda (também em desenvolvimento) -->
         <section :class="styles['home-agenda-section']">
           <h2>Agenda</h2>
           <div>
@@ -111,26 +91,25 @@
 </template>
 
 <script>
-// Importa os estilos em CSS Modules
 import styles from '@/assets/css/HomeView.module.css';
 
 export default {
   data() {
     return {
       styles,
-      userName: 'Marcos', // Nome do usuário a ser exibido
-      userPhoto: require('../assets/User.jpg'), // Caminho da foto do usuário
-      menuItems: [ // Itens do menu lateral
-        'INÍCIO',
-        'CONSULTAS',
-        'PROFISSIONAIS',
-        'PACIENTE',
-        'MENSAGENS',
-        'CONFIGURAÇÕES',
-        'SAIR'
+      userName: 'Marcos',
+      userPhoto: require('../assets/User.jpg'),
+      menuItems: [
+        { label: 'INÍCIO', icon: 'fas fa-home' },
+        { label: 'CONSULTAS', icon: 'fas fa-calendar-check' },
+        { label: 'PROFISSIONAIS', icon: 'fas fa-user-md' },
+        { label: 'PACIENTE', icon: 'fas fa-user' },
+        { label: 'MENSAGENS', icon: 'fas fa-comments' },
+        { label: 'CONFIGURAÇÕES', icon: 'fas fa-cog' },
+        { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
-      activeMenu: 'INÍCIO', // Item de menu atualmente ativo
-      messages: [ // Lista de mensagens por profissional
+      activeMenu: 'INÍCIO',
+      messages: [
         {
           name: 'Dr. João Pereira',
           avatar: require('../assets/User.jpg'),
@@ -163,9 +142,11 @@ export default {
     };
   },
   methods: {
-    // Define qual item do menu está ativo
     setActiveMenu(item) {
       this.activeMenu = item;
+    },
+    logout() {
+      this.$router.push('/login');
     }
   }
 };

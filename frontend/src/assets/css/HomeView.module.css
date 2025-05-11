@@ -80,7 +80,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 2rem;
   margin-bottom: 1rem;
 }
@@ -147,11 +147,13 @@
 /* Caixa do calendário (lado direito do cabeçalho) */
 .home-calendar-box {
   width: 300px;
-  height: 160px;
+  height: 160px; /* Ajuste a altura conforme necessário */
   background-color: white;
   border-radius: 10px;
   padding: 2.5rem;
   color: #101E33;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 /* Corpo do conteúdo principal abaixo do cabeçalho */
@@ -159,7 +161,7 @@
   display: flex;
   justify-content: space-between;
   gap: 2rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 /* Seção da esquerda (chat/mensagens) */
