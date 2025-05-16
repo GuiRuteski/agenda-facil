@@ -19,7 +19,7 @@
           :class="[styles['home-menu-item'], activeMenu === item.label ? styles['home-active-menu'] : '']"
           role="button"
           tabindex="0"
-          @click="item.label === 'SAIR' ? logout() : setActiveMenu(item.label)"
+          @click="handleMenuClick(item.label)"
         >
           <i :class="[item.icon]" style="margin-right: 10px;"></i>
           {{ item.label }}
@@ -142,8 +142,31 @@ export default {
     };
   },
   methods: {
-    setActiveMenu(item) {
-      this.activeMenu = item;
+    handleMenuClick(label) {
+      this.activeMenu = label;
+      switch (label) {
+        case 'INÍCIO':
+          this.$router.push('/home');
+          break;
+        case 'CONSULTAS':
+          this.$router.push('/scheduling');
+          break;
+        case 'PROFISSIONAIS':
+          this.$router.push('/professional');
+          break;
+        case 'PACIENTE':
+          this.$router.push('/patient');
+          break;
+        case 'MENSAGENS':
+          this.$router.push('/message');
+          break;
+        case 'CONFIGURAÇÕES':
+          this.$router.push('/settings');
+          break;
+        case 'SAIR':
+          this.logout();
+          break;
+      }
     },
     logout() {
       this.$router.push('/login');

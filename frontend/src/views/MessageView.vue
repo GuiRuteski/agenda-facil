@@ -1,22 +1,22 @@
 <template>
-  <div :class="styles['professional-container']">
+  <div :class="styles['message-container']">
     <!-- Barra lateral (sidebar) -->
-    <aside :class="styles['professional-sidebar']">
+    <aside :class="styles['message-sidebar']">
       <!-- Caixa do logotipo -->
-      <div :class="styles['professional-logo-box']">
+      <div :class="styles['message-logo-box']">
         <img 
           :src="require('../assets/logo.png')" 
           alt="Logo Agenda Fácil" 
-          :class="styles['professional-logo']" 
+          :class="styles['message-logo']" 
         />
       </div>
 
       <!-- Lista de menus laterais -->
-      <ul :class="styles['professional-menu-list']">
+      <ul :class="styles['message-menu-list']">
         <li 
           v-for="item in menuItems" 
           :key="item.label" 
-          :class="[styles['professional-menu-item'], activeMenu === item.label ? styles['professional-active-menu'] : '']"
+          :class="[styles['message-menu-item'], activeMenu === item.label ? styles['message-active-menu'] : '']"
           role="button"
           tabindex="0"
           @click="handleMenuClick(item.label)"
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import styles from '@/assets/css/ProfessionalView.module.css';
+import styles from '@/assets/css/MessageView.module.css';
 
 export default {
   data() {
@@ -47,7 +47,7 @@ export default {
         { label: 'CONFIGURAÇÕES', icon: 'fas fa-cog' },
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
-      activeMenu: 'PROFISSIONAIS',
+      activeMenu: 'MENSAGENS',
     };
   },
   methods: {

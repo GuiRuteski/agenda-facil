@@ -1,9 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import LoginView from '../views/LoginView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import HomeView from '../views/HomeView.vue'
-
 const routes = [
   {
     path: '/',
@@ -12,12 +8,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: LoginView
+    component: () => import('@/views/LoginView.vue')
   },
   {
     path: '/register',
     name: 'Register',
-    component: RegisterView
+    component: () => import('@/views/RegisterView.vue')
   },
   {
     path: '/painel',
@@ -26,21 +22,36 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/agendamentos',
-    name: 'Agendamentos',
-    component: () => import('../views/AgendamentoView.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/home',
     name: 'Home',
-    component: HomeView
+    component: () => import('@/views/HomeView.vue')
   },
   {
-  path: '/profissionais',
-  component: () => import('@/views/ProfessionalView.vue'),
-  meta: { requiresAuth: true }
-  }
+    path: '/scheduling',
+    name: 'Scheduling',
+    component: () => import('@/views/SchedulingView.vue')
+  },
+  {
+    path: '/professional',
+    name: 'Professional',
+    component: () => import('@/views/ProfessionalView.vue')
+  },
+  {
+    path: '/patient',
+    name: 'Patient',
+    component: () => import('@/views/PatientView.vue')
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: () => import('@/views/MessageView.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('@/views/SettingsView.vue')
+  },
+  
 ]
 
 const router = createRouter({

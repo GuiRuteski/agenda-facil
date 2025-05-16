@@ -1,0 +1,66 @@
+/* Container principal que ocupa toda a altura da tela e usa flexbox para dividir sidebar e conteúdo */
+.patient-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Barra lateral fixa à esquerda */
+.patient-sidebar {
+  width: 220px;
+  background-color: #254370;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+/* Espaço que contém a logo */
+.patient-logo-box {
+  margin-bottom: 2rem;
+}
+
+/* Estilo da imagem da logo */
+.patient-logo {
+  width: 120px;
+  height: auto;
+}
+
+/* Lista do menu (remove marcadores e espaçamentos padrão) */
+.patient-menu-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+/* Estilo dos itens do menu da sidebar */
+.patient-menu-item {
+  margin: 10px 0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background-color: #254370;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+/* Efeito ao passar o mouse sobre o item do menu */
+.patient-menu-item:hover {
+  background-color: #1f3a63;
+  color: #f0f2f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo aplicado ao item ativo do menu */
+.patient-active-menu {
+  background-color: #1f3a63;
+  color: #f0f2f5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
