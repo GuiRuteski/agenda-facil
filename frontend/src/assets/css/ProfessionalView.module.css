@@ -64,3 +64,332 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
+
+/* Área principal de conteúdo (direita da sidebar) */
+.professional-main-content {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Linha do cabeçalho com saudação e calendário */
+.professional-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Barra superior do conteúdo */
+.professional-top-bar {
+  flex: 1;
+  height: 160px;
+  border-radius: 10px;
+  padding: 2.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Informações do usuário */
+.professional-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Título da saudação */
+.professional-user-info h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #101E33;
+}
+
+/* Caixa com traços decorativos */
+.professional-user-underline-box {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+/* Estilos dos traços decorativos */
+.professional-user-underline {
+  height: 8px;
+  background-color: #101E33;
+  border-radius: 4px;
+}
+
+/* Tamanhos dos traços */
+.professional-user-underline.short {
+  width: 350px;
+}
+.professional-user-underline.long {
+  width: 410px;
+}
+
+/* Foto do usuário */
+.professional-user-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Seção de conteúdo principal */
+.professional-content {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Seção de Filtros */
+.professional-filters {
+  display: flex;
+  Flex-direction: column; /* Deixa os elementos em coluna */
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  border-radius: 10px;
+}
+
+.professional-filters-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.professional-search-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative; /* Adicione esta linha */
+}
+
+.professional-search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.professional-search-input {
+  width: 1185px;
+  padding: 12px 20px 12px 40px;
+  border: 1px transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background-color: #AAAAAA;
+  color: #101E33;
+}
+
+.professional-search-input:focus {
+  outline: none;
+  border-color: #254370;
+  box-shadow: 0 0 0 2px rgba(37, 67, 112, 0.2);
+}
+
+.professional-filter-group {
+  flex: 1;
+  min-width: 200px;
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.professional-filter-select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #AAAAAA;
+  color: #777;
+}
+
+.professional-filter-select option {
+  background-color: #cccccc;
+  color: #254370;          
+}
+
+.professional-filter-select option:checked {
+  background-color: #254370;
+  color: #fff;
+}
+
+/* Grid de Profissionais */
+.professional-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.professional-card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.professional-info h3 {
+  margin: 0;
+  color: #101E33;
+  font-size: 1.2rem;
+  min-height: 2.4em; /* Garante espaço para até 2 linhas */
+  display: flex;
+  align-items: center;
+}
+
+.professional-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  padding: 1.5rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.professional-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #254370;
+}
+
+.professional-info {
+  flex: 1;
+}
+
+.professional-info h3 {
+  margin: 0;
+  color: #101E33;
+  font-size: 1.2rem;
+}
+
+.professional-info p {
+  margin: 0.3rem 0 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.professional-card-status {
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.professional-status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.professional-status-badge.available {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.professional-status-badge.unavailable {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+.professional-schedule-button {
+  margin: 0 1.5rem 1.5rem;
+  padding: 12px;
+  background-color: #254370;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.professional-schedule-button:hover {
+  background-color: #1f3a63;
+}
+
+.professional-schedule-button:disabled,
+.professional-schedule-button.disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+
+.professional-carousel {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  padding-bottom: 1rem;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE e Edge */
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  /* Opcional: rolagem suave */
+  scroll-behavior: smooth;
+}
+
+.professional-card {
+  min-width: 260px; /* Largura mínima de cada card */
+  max-width: 280px;
+  flex: 0 0 auto;
+}
+
+.professional-carousel-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carousel-arrow {
+  background: #254370;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0 8px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.carousel-arrow:hover {
+  background: #1f3a63;
+}

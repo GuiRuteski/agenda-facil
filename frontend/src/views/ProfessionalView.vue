@@ -26,8 +26,119 @@
         </li>
       </ul>
     </aside>
+
+    <!-- Conteúdo principal da página -->
+    <main :class="styles['professional-main-content']">
+      <div :class="styles['professional-header-row']">
+        <div :class="styles['professional-top-bar']">
+          <div :class="styles['professional-user-info']">
+            <h1>Olá, Sr. {{ userName }}!</h1>
+            <div :class="styles['professional-user-underline-box']">
+              <div :class="[styles['professional-user-underline'], styles.short]"></div>
+              <div :class="[styles['professional-user-underline'], styles.long]"></div>
+            </div>
+          </div>
+          <img 
+            :src="userPhoto"
+            @error="userPhoto = require('../assets/User.jpg')"
+            alt="Foto do usuário" 
+            :class="styles['professional-user-photo']" 
+          />
+        </div>     
+      </div>
+
+      <!-- Seção de Filtros e Busca -->
+      <div :class="styles['professional-filters']">
+        <!-- Barra de pesquisa -->
+        <div :class="styles['professional-search-container']">
+          <i class="fas fa-search" :class="styles['professional-search-icon']"></i>
+          <input 
+            type="text" 
+            placeholder="Buscar profissional..." 
+            v-model="searchQuery"
+            :class="styles['professional-search-input']"
+          >
+        </div>
+        <!-- Filtros lado a lado -->
+        <div :class="styles['professional-filters-row']">
+          <div :class="styles['professional-filter-group']">
+            <select v-model="specialtyFilter" :class="styles['professional-filter-select']">
+              <option value="">Todas especialidades</option>
+              <option v-for="spec in specialties" :value="spec" :key="spec">{{ spec }}</option>
+            </select>
+          </div>
+          <div :class="styles['professional-filter-group']">
+            <select v-model="availabilityFilter" :class="styles['professional-filter-select']">
+              <option value="">Todos os status</option>
+              <option value="available">Disponível</option>
+              <option value="unavailable">Indisponível</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carrossel de Profissionais com setas -->
+      <div :class="styles['professional-carousel-wrapper']">
+        <button 
+          :class="styles['carousel-arrow']" 
+          @click="scrollCarousel('left')"
+          aria-label="Anterior"
+        >
+          &#8592;
+        </button>
+        <div :class="styles['professional-carousel']" ref="carousel">
+          <div :class="styles['carousel-track']">
+            <div 
+              v-for="professional in filteredProfessionals" 
+              :key="professional.id"
+              :class="styles['professional-card']"
+            >
+              <div :class="styles['card-header']">
+                <img 
+                  :src="professional.photo || require('../assets/Doctor.jpg')" 
+                  :class="styles['professional-photo']"
+                  alt="Foto do profissional"
+                />
+                <div :class="styles['professional-info']">
+                  <h3>{{ professional.name }}</h3>
+                  <p>{{ professional.specialty }}</p>
+                  <p>CRM: {{ professional.crm }}</p>
+                </div>
+              </div>
+              <div :class="styles['professional-card-status']">
+                <span :class="[
+                  styles['professional-status-badge'],
+                  professional.available ? styles.available : styles.unavailable
+                ]">
+                  {{ professional.available ? 'Disponível' : professional.unavailableReason }}
+                </span>
+              </div>
+              <button 
+                :class="[
+                  styles['professional-schedule-button'],
+                  professional.available ? '' : styles.disabled
+                ]"
+                :disabled="!professional.available"
+                @click="scheduleAppointment(professional)"
+              >
+                Agendar Consulta
+              </button>
+            </div>
+          </div>
+        </div>
+        <button 
+          :class="styles['carousel-arrow']" 
+          @click="scrollCarousel('right')"
+          aria-label="Próximo"
+        >
+          &#8594;
+        </button>
+      </div>
+    </main>
   </div>
 </template>
+
+
 
 <script>
 import styles from '@/assets/css/ProfessionalView.module.css';
@@ -48,7 +159,85 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'PROFISSIONAIS',
+
+      // Filtros e busca
+      searchQuery: '',
+      specialtyFilter: '',
+      availabilityFilter: '',
+
+      // Dados dos profissionais (simulados - substituir por chamada API)
+      professionals: [
+        {
+          id: 1,
+          name: 'Dr. João Pereira',
+          specialty: 'Cardiologista',
+          crm: 'CRM 123456-SP',
+          photo: require('../assets/Doctor.jpg'),
+          available: true
+        },
+        {
+          id: 2,
+          name: 'Dra. Ana Oliveira',
+          specialty: 'Ortopedista',
+          crm: 'CRM 987654-RJ',
+          photo: require('../assets/Doctor.jpg'),
+          available: true
+        },
+        {
+          id: 3,
+          name: 'Dr. Rubens Silva',
+          specialty: 'Pediatra',
+          crm: 'CRM 456321-MG',
+          photo: require('../assets/Doctor.jpg'),
+          available: false,
+          unavailableReason: 'De férias'
+        },
+        {
+          id: 4,
+          name: 'Dra. Camila Ferreira',
+          specialty: 'Neurologista',
+          crm: 'CRM 654789-RS',
+          photo: require('../assets/Doctor.jpg'),
+          available: true
+        },
+        {
+          id: 5,
+          name: 'Teste de carrossel',
+          specialty: 'Neurologista',
+          crm: 'CRM 654789-RS',
+          photo: require('../assets/Doctor.jpg'),
+          available: true
+        }
+      ]
     };
+  },
+  computed: {
+    // Lista de especialidades únicas para o filtro
+    specialties() {
+      return [...new Set(this.professionals.map(p => p.specialty))];
+    },
+
+    // Profissionais filtrados
+    filteredProfessionals() {
+      return this.professionals.filter(professional => {
+        // Filtro por nome
+        const nameMatch = professional.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+
+        // Filtro por especialidade
+        const specialtyMatch = !this.specialtyFilter ||
+          professional.specialty === this.specialtyFilter;
+
+        // Filtro por disponibilidade
+        let availabilityMatch = true;
+        if (this.availabilityFilter === 'available') {
+          availabilityMatch = professional.available;
+        } else if (this.availabilityFilter === 'unavailable') {
+          availabilityMatch = !professional.available;
+        }
+
+        return nameMatch && specialtyMatch && availabilityMatch;
+      });
+    }
   },
   methods: {
     handleMenuClick(label) {
@@ -79,6 +268,21 @@ export default {
     },
     logout() {
       this.$router.push('/login');
+    },
+    scrollCarousel(direction) {
+      const carousel = this.$refs.carousel;
+      const cardWidth = 280; // mesmo valor do seu CSS (max-width/min-width do card)
+      const gap = 24; // mesmo valor do gap no CSS (1.5rem = 24px)
+      const scrollAmount = cardWidth + gap;
+      if (direction === 'left') {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    },
+    scheduleAppointment(professional) {
+      // Implemente aqui a lógica de agendamento
+      alert(`Agendar consulta com ${professional.name}`);
     }
   }
 };

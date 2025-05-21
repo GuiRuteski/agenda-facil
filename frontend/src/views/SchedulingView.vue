@@ -131,7 +131,7 @@ export default {
           status: 'Cancelado'
         },
         {
-          profissional: 'Dr. João Pereira',
+          profissional: 'Teste de tabela',
           especializacao: 'Cardiologista',
           data: '08/03',
           hora: '12:30',

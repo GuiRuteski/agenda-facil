@@ -26,6 +26,27 @@
         </li>
       </ul>
     </aside>
+
+    <!-- Conteúdo principal da página -->
+    <main :class="styles['settings-main-content']">
+      <div :class="styles['settings-header-row']">
+        <div :class="styles['settings-top-bar']">
+          <div :class="styles['settings-user-info']">
+            <h1>Olá, Sr. {{ userName }}!</h1>
+            <div :class="styles['settings-user-underline-box']">
+              <div :class="[styles['settings-user-underline'], styles.short]"></div>
+              <div :class="[styles['settings-user-underline'], styles.long]"></div>
+            </div>
+          </div>
+          <img 
+            :src="userPhoto"
+            @error="userPhoto = require('../assets/User.jpg')"
+            alt="Foto do usuário" 
+            :class="styles['settings-user-photo']" 
+          />
+        </div>     
+      </div>
+    </main>
   </div>
 </template>
 

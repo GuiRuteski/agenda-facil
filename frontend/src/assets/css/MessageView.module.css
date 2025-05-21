@@ -64,3 +64,91 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
+
+/* Área principal de conteúdo (direita da sidebar) */
+.message-main-content {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Linha do cabeçalho com saudação e calendário */
+.message-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Barra superior do conteúdo */
+.message-top-bar {
+  flex: 1;
+  height: 160px;
+  border-radius: 10px;
+  padding: 2.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Informações do usuário */
+.message-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Título da saudação */
+.message-user-info h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #101E33;
+}
+
+/* Caixa com traços decorativos */
+.message-user-underline-box {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+/* Estilos dos traços decorativos */
+.message-user-underline {
+  height: 8px;
+  background-color: #101E33;
+  border-radius: 4px;
+}
+
+/* Tamanhos dos traços */
+.message-user-underline.short {
+  width: 350px;
+}
+.message-user-underline.long {
+  width: 410px;
+}
+
+/* Foto do usuário */
+.message-user-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Seção de conteúdo principal */
+.message-content {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
