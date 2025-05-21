@@ -10,7 +10,12 @@
 
       <div :class="styles['register-form-row']">
         <input v-model="password" type="password" placeholder="Senha" :class="styles['register-input']" required />
-        <input v-model="phone" type="text" placeholder="Telefone" :class="styles['register-input']" required />
+        <select v-model="accountType" :class="styles['register-select']" required>
+          <option value="" disabled selected>Tipo de Conta</option>
+          <option value="Paciente">Paciente</option>
+          <option value="Médico">Médico</option>
+          <option value="Secretario">Secretário</option>
+        </select>
       </div>
 
       <div :class="styles['register-form-row']">
@@ -41,10 +46,10 @@ export default {
     return {
       email: '',
       cpf: '',
-      phone: '',
       password: '',
       confirmPassword: '',
       gender: '',
+      accountType: '',
       styles
     };
   },
@@ -57,9 +62,9 @@ export default {
       const dados = {
         email: this.email,
         cpf: this.cpf,
-        telefone: this.phone,
         senha: this.password,
-        sexo: this.gender
+        sexo: this.gender,
+        tipoConta: this.accountType
       };
       try {
         await axios.post('http://localhost:5000/register', dados);

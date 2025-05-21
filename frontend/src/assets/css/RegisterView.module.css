@@ -36,7 +36,7 @@
   border: 2px solid white;
   border-radius: 8px;
   background-color: transparent;
-  color: white;
+  color: #e0e0e0;
   font-size: 1rem;
   font-family: 'Inter', sans-serif;
 }
@@ -55,12 +55,12 @@
   border: 2px solid white;
   border-radius: 8px;
   background-color: transparent;
-  color: white;
+  color: #e0e0e0;
   font-size: 1rem;
   font-family: 'Inter', sans-serif;
-  appearance: none; /* Remove o estilo padrão do navegador */
-  -webkit-appearance: none; /* Remove o estilo padrão no Safari */
-  -moz-appearance: none; /* Remove o estilo padrão no Firefox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; 
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
@@ -69,8 +69,8 @@
 
 .register-input:focus,
 .register-select:focus {
-  outline: none; /* Remove o contorno padrão */
-  border-color: #d9d9d9; /* Altera a cor da borda ao focar */
+  outline: none; 
+  border-color: #d9d9d9; 
 }
 
 .register-select option {

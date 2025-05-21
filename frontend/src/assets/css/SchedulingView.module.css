@@ -1,4 +1,4 @@
-/* Container principal que ocupa toda a altura da tela e usa flexbox para dividir sidebar e conteúdo */
+/* Container principal da aplicação */
 .scheduling-container {
   display: flex;
   height: 100vh;
@@ -6,7 +6,7 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* Barra lateral fixa à esquerda */
+/* Barra lateral esquerda (menu de navegação) */
 .scheduling-sidebar {
   width: 220px;
   background-color: #254370;
@@ -17,7 +17,7 @@
   padding-top: 1rem;
 }
 
-/* Espaço que contém a logo */
+/* Área da logo na sidebar */
 .scheduling-logo-box {
   margin-bottom: 2rem;
 }
@@ -28,14 +28,14 @@
   height: auto;
 }
 
-/* Lista do menu (remove marcadores e espaçamentos padrão) */
+/* Lista de itens do menu */
 .scheduling-menu-list {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
-/* Estilo dos itens do menu da sidebar */
+/* Estilo dos itens do menu */
 .scheduling-menu-item {
   margin: 10px 0;
   cursor: pointer;
@@ -45,11 +45,11 @@
   padding: 12px 20px;
   border-radius: 8px;
   background-color: #254370;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
   text-align: center;
 }
 
-/* Efeito ao passar o mouse sobre o item do menu */
+/* Efeito de destaque ao passar o mouse */
 .scheduling-menu-item:hover {
   background-color: #1f3a63;
   color: #f0f2f5;
@@ -57,10 +57,198 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo aplicado ao item ativo do menu */
+/* Estilo para item de menu ativo */
 .scheduling-active-menu {
   background-color: #1f3a63;
   color: #f0f2f5;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
+}
+
+/* Área principal de conteúdo (direita da sidebar) */
+.scheduling-main-content {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Linha do cabeçalho com saudação e calendário */
+.scheduling-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Barra superior do conteúdo */
+.scheduling-top-bar {
+  flex: 1;
+  height: 160px;
+  border-radius: 10px;
+  padding: 2.5rem;
+  background-color: #D0D0D0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Informações do usuário */
+.scheduling-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Título da saudação */
+.scheduling-user-info h1 {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #101E33;
+}
+
+/* Caixa com traços decorativos */
+.scheduling-user-underline-box {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+/* Estilos dos traços decorativos */
+.scheduling-user-underline {
+  height: 8px;
+  background-color: #101E33;
+  border-radius: 4px;
+}
+
+/* Tamanhos dos traços */
+.scheduling-user-underline.short {
+  width: 350px;
+}
+.scheduling-user-underline.long {
+  width: 410px;
+}
+
+/* Foto do usuário */
+.scheduling-user-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Seção de conteúdo principal */
+.scheduling-content {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container da tabela */
+.scheduling-table-container {
+  max-width: 1200px;
+  margin-left: 40px;
+  height: 320px;      /* Altura fixa desejada */
+  min-height: 320px;
+  overflow-y: auto;   /* Scroll vertical quando necessário */
+  overflow-x: auto;   /* Scroll horizontal se a tabela for muito larga */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #254370 #e0e0e0; /* Firefox */
+}
+
+/* Estilo da tabela */
+.scheduling-table {
+  width: 100%;
+  min-height: 320px; /* Altura mínima */
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Cabeçalho da tabela */
+.scheduling-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff; /* ou a cor de fundo da sua tabela */
+}
+
+.scheduling-table th {
+  background-color: #254370;
+  color: white;
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border: none;
+}
+
+/* Corpo da tabela */
+.scheduling-table tbody {
+  background-color: white;
+}
+.scheduling-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+  vertical-align: middle;
+}
+.scheduling-table tr:last-child td {
+  border-bottom: none;
+}
+.scheduling-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.scheduling-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Estilo dos status */
+.scheduling-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  min-width: 90px;
+  text-align: center;
+}
+.scheduling-status.agendado {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+.scheduling-status.finalizado {
+  background-color: #e8f5e9;
+  color: #388e3c;
+  border: 1px solid #c8e6c9;
+}
+.scheduling-status.cancelado {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+/* Título da seção principal */
+.scheduling-section-title {
+  font-size: 2.5rem;
+  margin-left: 40px;
+  font-weight: bold;
+  color: #101E33;
+  margin-bottom: 0.5rem;
 }
