@@ -1,8 +1,7 @@
 <template>
   <div :class="styles['professional-container']">
-    <!-- Barra lateral (sidebar) -->
+    <!-- Layout principal -->
     <aside :class="styles['professional-sidebar']">
-      <!-- Caixa do logotipo -->
       <div :class="styles['professional-logo-box']">
         <img 
           :src="require('../assets/logo.png')" 
@@ -10,8 +9,6 @@
           :class="styles['professional-logo']" 
         />
       </div>
-
-      <!-- Lista de menus laterais -->
       <ul :class="styles['professional-menu-list']">
         <li 
           v-for="item in menuItems" 
@@ -27,8 +24,8 @@
       </ul>
     </aside>
 
-    <!-- Conteúdo principal da página -->
     <main :class="styles['professional-main-content']">
+      <!-- Cabeçalho -->
       <div :class="styles['professional-header-row']">
         <div :class="styles['professional-top-bar']">
           <div :class="styles['professional-user-info']">
@@ -47,9 +44,8 @@
         </div>     
       </div>
 
-      <!-- Seção de Filtros e Busca -->
+      <!-- Filtros -->
       <div :class="styles['professional-filters']">
-        <!-- Barra de pesquisa -->
         <div :class="styles['professional-search-container']">
           <i class="fas fa-search" :class="styles['professional-search-icon']"></i>
           <input 
@@ -59,7 +55,7 @@
             :class="styles['professional-search-input']"
           >
         </div>
-        <!-- Filtros lado a lado -->
+
         <div :class="styles['professional-filters-row']">
           <div :class="styles['professional-filter-group']">
             <select v-model="specialtyFilter" :class="styles['professional-filter-select']">
@@ -77,14 +73,14 @@
         </div>
       </div>
 
-      <!-- Carrossel de Profissionais com setas -->
+      <!-- Carrossel de Profissionais -->
       <div :class="styles['professional-carousel-wrapper']">
         <button 
           :class="styles['carousel-arrow']" 
           @click="scrollCarousel('left')"
           aria-label="Anterior"
         >
-          &#8592;
+          ←
         </button>
         <div :class="styles['professional-carousel']" ref="carousel">
           <div :class="styles['carousel-track']">
@@ -131,7 +127,7 @@
           @click="scrollCarousel('right')"
           aria-label="Próximo"
         >
-          &#8594;
+          →
         </button>
       </div>
     </main>
