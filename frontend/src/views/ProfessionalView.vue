@@ -1,6 +1,6 @@
 <template>
   <div :class="styles['professional-container']">
-    <!-- Layout principal -->
+    <!-- Sidebar -->
     <aside :class="styles['professional-sidebar']">
       <div :class="styles['professional-logo-box']">
         <img 
@@ -24,8 +24,9 @@
       </ul>
     </aside>
 
+    <!-- Main Content -->
     <main :class="styles['professional-main-content']">
-      <!-- Cabeçalho -->
+      <!-- Header -->
       <div :class="styles['professional-header-row']">
         <div :class="styles['professional-top-bar']">
           <div :class="styles['professional-user-info']">
@@ -55,7 +56,6 @@
             :class="styles['professional-search-input']"
           >
         </div>
-
         <div :class="styles['professional-filters-row']">
           <div :class="styles['professional-filter-group']">
             <select v-model="specialtyFilter" :class="styles['professional-filter-select']">
@@ -130,11 +130,88 @@
           →
         </button>
       </div>
+
+      <!-- Modal de Agendamento -->
+      <div v-if="showScheduleModal" :class="styles['schedule-modal']">
+        <div :class="styles['modal-overlay']" @click="closeModal"></div>
+        <div :class="styles['modal-content']">
+          <button :class="styles['close-button']" @click="closeModal">
+            &times;
+          </button>
+          <div :class="styles['modal-header']">
+            <h2>{{ selectedProfessional.name }}</h2>
+            <p>{{ selectedProfessional.specialty }} - {{ selectedProfessional.crm }}</p>
+            <div :class="styles['rating']">
+              <span>4,8</span>
+              <div :class="styles['stars']">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span>(122 avaliações)</span>
+            </div>
+          </div>
+          <div :class="styles['calendar-container']">
+            <div :class="styles['month-header']">
+              <button @click="prevMonth">&lt;</button>
+              <h3>{{ currentMonth }} {{ currentYear }}</h3>
+              <button @click="nextMonth">&gt;</button>
+            </div>
+            <div :class="styles['days-grid']">
+              <div v-for="day in daysOfWeek" :key="day" :class="styles['day-header']">
+                {{ day }}
+              </div>
+              <div 
+                v-for="day in calendarDays" 
+                :key="day.date.toString()"
+                :class="[
+                  styles['day-cell'],
+                  !day.isCurrentMonth ? styles['non-current-month'] : '',
+                  day.isAvailable ? styles.available : styles.unavailable,
+                  selectedDay && selectedDay.date.toString() === day.date.toString() ? styles.selected : ''
+                ]"
+                @click="selectDay(day)"
+                :style="{
+                  cursor: day.isCurrentMonth && day.isAvailable ? 'pointer' : 'not-allowed',
+                  opacity: day.isCurrentMonth ? 1 : 0.5
+                }"
+              >
+                {{ day.day }}
+                <span v-if="day.isAvailable" :class="styles['available-indicator']"></span>
+              </div>
+            </div>
+          </div>
+          <div :class="styles['time-slots-container']">
+            <h3>Horários Disponíveis</h3>
+            <div :class="styles['time-slots-grid']">
+              <button 
+                v-for="time in availableTimes" 
+                :key="time"
+                :class="[
+                  styles['time-slot'],
+                  selectedTime === time ? styles.selected : ''
+                ]"
+                @click="selectTime(time)"
+                :disabled="availableTimes.length === 0"
+              >
+                {{ time }}
+              </button>
+            </div>
+          </div>
+          <button 
+            :class="styles['confirm-button']"
+            :disabled="!selectedDay || !selectedTime"
+            @click="confirmAppointment"
+          >
+            Confirmar Agendamento
+          </button>
+        </div>
+      </div>
     </main>
   </div>
 </template>
-
-
 
 <script>
 import styles from '@/assets/css/ProfessionalView.module.css';
@@ -161,7 +238,7 @@ export default {
       specialtyFilter: '',
       availabilityFilter: '',
 
-      // Dados dos profissionais (simulados - substituir por chamada API)
+      // Dados dos profissionais
       professionals: [
         {
           id: 1,
@@ -195,16 +272,16 @@ export default {
           crm: 'CRM 654789-RS',
           photo: require('../assets/Doctor.jpg'),
           available: true
-        },
-        {
-          id: 5,
-          name: 'Teste de carrossel',
-          specialty: 'Neurologista',
-          crm: 'CRM 654789-RS',
-          photo: require('../assets/Doctor.jpg'),
-          available: true
         }
-      ]
+      ],
+
+      // Variáveis para o modal de agendamento
+      showScheduleModal: false,
+      selectedProfessional: null,
+      selectedDay: null,
+      selectedTime: null,
+      currentDate: new Date(),
+      availableTimes: []
     };
   },
   computed: {
@@ -216,15 +293,10 @@ export default {
     // Profissionais filtrados
     filteredProfessionals() {
       return this.professionals.filter(professional => {
-        // Filtro por nome
         const nameMatch = professional.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-
-        // Filtro por especialidade
-        const specialtyMatch = !this.specialtyFilter ||
-          professional.specialty === this.specialtyFilter;
-
-        // Filtro por disponibilidade
+        const specialtyMatch = !this.specialtyFilter || professional.specialty === this.specialtyFilter;
         let availabilityMatch = true;
+        
         if (this.availabilityFilter === 'available') {
           availabilityMatch = professional.available;
         } else if (this.availabilityFilter === 'unavailable') {
@@ -233,9 +305,65 @@ export default {
 
         return nameMatch && specialtyMatch && availabilityMatch;
       });
+    },
+
+    // Computeds para o calendário
+    currentMonth() {
+      return this.currentDate.toLocaleString('pt-BR', { month: 'long' });
+    },
+    currentYear() {
+      return this.currentDate.getFullYear();
+    },
+    daysOfWeek() {
+      return ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    },
+    calendarDays() {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const prevMonthDays = firstDay.getDay();
+      const nextMonthDays = 6 - lastDay.getDay();
+      const days = [];
+
+      // Dias do mês anterior
+      const prevMonthLastDay = new Date(year, month, 0).getDate();
+      for (let i = prevMonthDays - 1; i >= 0; i--) {
+        days.push({
+          day: prevMonthLastDay - i,
+          date: new Date(year, month - 1, prevMonthLastDay - i),
+          isCurrentMonth: false,
+          isAvailable: false
+        });
+      }
+
+      // Dias do mês atual (simulação: dias ímpares disponíveis)
+      for (let i = 1; i <= lastDay.getDate(); i++) {
+        const date = new Date(year, month, i);
+        days.push({
+          day: i,
+          date: date,
+          isCurrentMonth: true,
+          isAvailable: i % 2 !== 0,
+          weekday: date.getDay()
+        });
+      }
+
+      // Dias do próximo mês
+      for (let i = 1; i <= nextMonthDays; i++) {
+        days.push({
+          day: i,
+          date: new Date(year, month + 1, i),
+          isCurrentMonth: false,
+          isAvailable: false
+        });
+      }
+
+      return days;
     }
   },
   methods: {
+    // Navegação do menu
     handleMenuClick(label) {
       this.activeMenu = label;
       switch (label) {
@@ -262,23 +390,96 @@ export default {
           break;
       }
     },
+
     logout() {
       this.$router.push('/login');
     },
+
+    // Controle do carrossel
     scrollCarousel(direction) {
       const carousel = this.$refs.carousel;
-      const cardWidth = 280; // mesmo valor do seu CSS (max-width/min-width do card)
-      const gap = 24; // mesmo valor do gap no CSS (1.5rem = 24px)
+      const cardWidth = 280;
+      const gap = 24;
       const scrollAmount = cardWidth + gap;
-      if (direction === 'left') {
-        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      } else {
-        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      carousel.scrollBy({ 
+        left: direction === 'left' ? -scrollAmount : scrollAmount, 
+        behavior: 'smooth' 
+      });
+    },
+
+    // Métodos para o modal de agendamento
+    scheduleAppointment(professional) {
+      console.log('Agendando com:', professional.name);
+      this.selectedProfessional = professional;
+      this.showScheduleModal = true;
+      this.selectedDay = null;
+      this.selectedTime = null;
+      this.currentDate = new Date();
+      this.availableTimes = []; // Limpa os horários ao abrir novo agendamento
+    },
+
+    closeModal() {
+      this.showScheduleModal = false;
+    },
+
+    prevMonth() {
+      this.currentDate = new Date(
+        this.currentDate.getFullYear(),
+        this.currentDate.getMonth() - 1,
+        1
+      );
+      this.selectedDay = null;
+      this.selectedTime = null;
+      this.availableTimes = [];
+    },
+
+    nextMonth() {
+      this.currentDate = new Date(
+        this.currentDate.getFullYear(),
+        this.currentDate.getMonth() + 1,
+        1
+      );
+      this.selectedDay = null;
+      this.selectedTime = null;
+      this.availableTimes = [];
+    },
+
+    selectDay(day) {
+      if (day.isCurrentMonth && day.isAvailable) {
+        this.selectedDay = day;
+        this.updateAvailableTimes(day);
+      } else if (day.isCurrentMonth && !day.isAvailable) {
+        this.selectedDay = null;
+        this.selectedTime = null;
+        this.availableTimes = [];
+        alert('Este dia não possui horários disponíveis para agendamento');
       }
     },
-    scheduleAppointment(professional) {
-      // Implemente aqui a lógica de agendamento
-      alert(`Agendar consulta com ${professional.name}`);
+
+    updateAvailableTimes(day) {
+      if (!day || !day.isAvailable) {
+        this.availableTimes = [];
+        return;
+      }
+      
+      // Simulação de horários disponíveis
+      if (day.day % 2 === 0) { // Dias pares - menos horários
+        this.availableTimes = ['09:00', '11:00', '15:00'];
+      } else { // Dias ímpares - mais horários
+        this.availableTimes = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
+      }
+    },
+
+    selectTime(time) {
+      this.selectedTime = time;
+    },
+
+    confirmAppointment() {
+      if (this.selectedDay && this.selectedTime) {
+        const formattedDate = this.selectedDay.date.toLocaleDateString('pt-BR');
+        alert(`Consulta agendada com ${this.selectedProfessional.name}\nData: ${formattedDate}\nHorário: ${this.selectedTime}`);
+        this.closeModal();
+      }
     }
   }
 };
