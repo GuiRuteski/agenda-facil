@@ -152,3 +152,102 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Container da seção de informações */
+.patient-info-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: fit-content;
+  margin-top: -1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Título da seção */
+.patient-info-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #101E33;
+}
+
+/* Grid com campos de informações */
+.patient-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 1rem 2rem;
+}
+
+/* Agrupamento do input com label */
+.patient-info-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label dos campos */
+.patient-info-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: #101E33;
+}
+
+/* Estilo dos inputs */
+.patient-info-input,
+select.patient-info-input {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  font-size: 0.95rem;
+  color: #333;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Ajuste para campos desabilitados */
+.patient-info-input:disabled,
+select.patient-info-input:disabled {
+  color: #333;
+  background-color: #7c7c7c;
+  cursor: default;
+}
+
+/* Botões de ação (Editar, Salvar, Cancelar) */
+.patient-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+/* Botão base */
+.patient-action-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Botão primário (azul escuro) */
+.patient-action-button.primary {
+  background-color: #254370;
+  color: white;
+}
+
+.patient-action-button.primary:hover {
+  background-color: #1f3a63;
+}
+
+/* Botão secundário (cinza claro) */
+.patient-action-button.secondary {
+  background-color: #c4c4c4;
+  color: #101E33;
+}
+
+.patient-action-button.secondary:hover {
+  background-color: #a8a8a8;
+}
