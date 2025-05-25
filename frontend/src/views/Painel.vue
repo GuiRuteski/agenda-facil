@@ -27,8 +27,6 @@ export default {
     }
   },
   async created() {
-    const token = localStorage.getItem('token')
-
     try {
       const res = await axios.get('http://localhost:5000/api/auth/me', {
         headers: {
