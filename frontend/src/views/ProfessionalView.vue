@@ -31,6 +31,7 @@
         <div :class="styles['professional-top-bar']">
           <div :class="styles['professional-user-info']">
             <h1>Olá, Sr. {{ userName }}!</h1>
+            <h1>Olá, {{ userName }}!</h1>
             <div :class="styles['professional-user-underline-box']">
               <div :class="[styles['professional-user-underline'], styles.short]"></div>
               <div :class="[styles['professional-user-underline'], styles.long]"></div>
@@ -214,13 +215,14 @@
 </template>
 
 <script>
-import styles from '@/assets/css/ProfessionalView.module.css';
+import styles from '@/assets/css/ProfessionalView.module.css'
+import api from '@/services/axios'
 
 export default {
   data() {
     return {
       styles,
-      userName: 'Marcos',
+      userName: '',
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
@@ -232,6 +234,7 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'PROFISSIONAIS',
+<<<<<<< HEAD
 
       // Filtros e busca
       searchQuery: '',
@@ -239,6 +242,11 @@ export default {
       availabilityFilter: '',
 
       // Dados dos profissionais
+=======
+      searchQuery: '',
+      specialtyFilter: '',
+      availabilityFilter: '',
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
       professionals: [
         {
           id: 1,
@@ -274,15 +282,92 @@ export default {
           available: true
         }
       ],
+<<<<<<< HEAD
 
       // Variáveis para o modal de agendamento
+=======
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
       showScheduleModal: false,
       selectedProfessional: null,
       selectedDay: null,
       selectedTime: null,
       currentDate: new Date(),
       availableTimes: []
+<<<<<<< HEAD
     };
+=======
+    }
+  },
+  computed: {
+    specialties() {
+      return [...new Set(this.professionals.map(p => p.specialty))]
+    },
+    filteredProfessionals() {
+      return this.professionals.filter(professional => {
+        const nameMatch = professional.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        const specialtyMatch = !this.specialtyFilter || professional.specialty === this.specialtyFilter
+        let availabilityMatch = true
+
+        if (this.availabilityFilter === 'available') {
+          availabilityMatch = professional.available
+        } else if (this.availabilityFilter === 'unavailable') {
+          availabilityMatch = !professional.available
+        }
+
+        return nameMatch && specialtyMatch && availabilityMatch
+      })
+    },
+    currentMonth() {
+      return this.currentDate.toLocaleString('pt-BR', { month: 'long' })
+    },
+    currentYear() {
+      return this.currentDate.getFullYear()
+    },
+    daysOfWeek() {
+      return ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+    },
+    calendarDays() {
+      const year = this.currentDate.getFullYear()
+      const month = this.currentDate.getMonth()
+      const firstDay = new Date(year, month, 1)
+      const lastDay = new Date(year, month + 1, 0)
+      const prevMonthDays = firstDay.getDay()
+      const nextMonthDays = 6 - lastDay.getDay()
+      const days = []
+
+      const prevMonthLastDay = new Date(year, month, 0).getDate()
+      for (let i = prevMonthDays - 1; i >= 0; i--) {
+        days.push({
+          day: prevMonthLastDay - i,
+          date: new Date(year, month - 1, prevMonthLastDay - i),
+          isCurrentMonth: false,
+          isAvailable: false
+        })
+      }
+
+      for (let i = 1; i <= lastDay.getDate(); i++) {
+        const date = new Date(year, month, i)
+        days.push({
+          day: i,
+          date: date,
+          isCurrentMonth: true,
+          isAvailable: i % 2 !== 0,
+          weekday: date.getDay()
+        })
+      }
+
+      for (let i = 1; i <= nextMonthDays; i++) {
+        days.push({
+          day: i,
+          date: new Date(year, month + 1, i),
+          isCurrentMonth: false,
+          isAvailable: false
+        })
+      }
+
+      return days
+    }
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
   },
   computed: {
     // Lista de especialidades únicas para o filtro
@@ -365,33 +450,34 @@ export default {
   methods: {
     // Navegação do menu
     handleMenuClick(label) {
-      this.activeMenu = label;
+      this.activeMenu = label
       switch (label) {
         case 'INÍCIO':
-          this.$router.push('/home');
-          break;
+          this.$router.push('/home')
+          break
         case 'CONSULTAS':
-          this.$router.push('/scheduling');
-          break;
+          this.$router.push('/scheduling')
+          break
         case 'PROFISSIONAIS':
-          this.$router.push('/professional');
-          break;
+          this.$router.push('/professional')
+          break
         case 'PACIENTE':
-          this.$router.push('/patient');
-          break;
+          this.$router.push('/patient')
+          break
         case 'MENSAGENS':
-          this.$router.push('/message');
-          break;
+          this.$router.push('/message')
+          break
         case 'CONFIGURAÇÕES':
-          this.$router.push('/settings');
-          break;
+          this.$router.push('/settings')
+          break
         case 'SAIR':
-          this.logout();
-          break;
+          this.logout()
+          break
       }
     },
 
     logout() {
+<<<<<<< HEAD
       this.$router.push('/login');
     },
 
@@ -422,22 +508,56 @@ export default {
       this.showScheduleModal = false;
     },
 
+=======
+      this.$router.push('/login')
+    },
+    scrollCarousel(direction) {
+      const carousel = this.$refs.carousel
+      const cardWidth = 280
+      const gap = 24
+      const scrollAmount = cardWidth + gap
+      carousel.scrollBy({ 
+        left: direction === 'left' ? -scrollAmount : scrollAmount, 
+        behavior: 'smooth' 
+      })
+    },
+    scheduleAppointment(professional) {
+      this.selectedProfessional = professional
+      this.showScheduleModal = true
+      this.selectedDay = null
+      this.selectedTime = null
+      this.currentDate = new Date()
+      this.availableTimes = []
+    },
+    closeModal() {
+      this.showScheduleModal = false
+    },
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
     prevMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
         this.currentDate.getMonth() - 1,
         1
+<<<<<<< HEAD
       );
       this.selectedDay = null;
       this.selectedTime = null;
       this.availableTimes = [];
     },
 
+=======
+      )
+      this.selectedDay = null
+      this.selectedTime = null
+      this.availableTimes = []
+    },
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
     nextMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
         this.currentDate.getMonth() + 1,
         1
+<<<<<<< HEAD
       );
       this.selectedDay = null;
       this.selectedTime = null;
@@ -484,3 +604,53 @@ export default {
   }
 };
 </script>
+=======
+      )
+      this.selectedDay = null
+      this.selectedTime = null
+      this.availableTimes = []
+    },
+    selectDay(day) {
+      if (day.isCurrentMonth && day.isAvailable) {
+        this.selectedDay = day
+        this.updateAvailableTimes(day)
+      } else if (day.isCurrentMonth && !day.isAvailable) {
+        this.selectedDay = null
+        this.selectedTime = null
+        this.availableTimes = []
+        alert('Este dia não possui horários disponíveis para agendamento')
+      }
+    },
+    updateAvailableTimes(day) {
+      if (!day || !day.isAvailable) {
+        this.availableTimes = []
+        return
+      }
+      if (day.day % 2 === 0) {
+        this.availableTimes = ['09:00', '11:00', '15:00']
+      } else {
+        this.availableTimes = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00']
+      }
+    },
+    selectTime(time) {
+      this.selectedTime = time
+    },
+    confirmAppointment() {
+      if (this.selectedDay && this.selectedTime) {
+        const formattedDate = this.selectedDay.date.toLocaleDateString('pt-BR')
+        alert(`Consulta agendada com ${this.selectedProfessional.name}\nData: ${formattedDate}\nHorário: ${this.selectedTime}`)
+        this.closeModal()
+      }
+    }
+  },
+  async created() {
+    try {
+      const response = await api.get('/auth/me')
+      this.userName = response.data.nome
+    } catch (error) {
+      console.error('Erro ao carregar o nome do usuário:', error)
+    }
+  }
+}
+</script>
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)

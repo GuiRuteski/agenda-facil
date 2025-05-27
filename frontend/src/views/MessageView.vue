@@ -2,7 +2,6 @@
   <div :class="styles['message-container']">
     <!-- Barra lateral (sidebar) -->
     <aside :class="styles['message-sidebar']">
-      <!-- Caixa do logotipo -->
       <div :class="styles['message-logo-box']">
         <img 
           :src="require('../assets/logo.png')" 
@@ -11,7 +10,6 @@
         />
       </div>
 
-      <!-- Lista de menus laterais -->
       <ul :class="styles['message-menu-list']">
         <li 
           v-for="item in menuItems" 
@@ -34,6 +32,12 @@
         <div :class="styles['message-top-bar']">
           <div :class="styles['message-user-info']">
             <h1>Olá, Sr. {{ userName }}!</h1>
+    <!-- Conteúdo principal -->
+    <main :class="styles['message-main-content']">
+      <div :class="styles['message-header-row']">
+        <div :class="styles['message-top-bar']">
+          <div :class="styles['message-user-info']">
+            <h1>Olá, {{ userName ? userName : 'Usuário' }}!</h1>
             <div :class="styles['message-user-underline-box']">
               <div :class="[styles['message-user-underline'], styles.short]"></div>
               <div :class="[styles['message-user-underline'], styles.long]"></div>
@@ -72,13 +76,14 @@
 
 
 <script>
-import styles from '@/assets/css/MessageView.module.css';
+import styles from '@/assets/css/MessageView.module.css'
+import api from '@/services/axios'
 
 export default {
   data() {
     return {
       styles,
-      userName: 'Marcos',
+      userName: '',
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
@@ -124,6 +129,15 @@ export default {
       ]
     };
   },
+  async created() {
+    try {
+      const response = await api.get('/auth/me')
+      this.userName = response.data.nome
+    } catch (error) {
+      console.error('Erro ao carregar nome do usuário:', error)
+      this.$router.push('/login')
+    }
+  },
   methods: {
     handleMenuClick(label) {
       this.activeMenu = label;
@@ -147,13 +161,11 @@ export default {
           this.$router.push('/settings');
           break;
         case 'SAIR':
-          this.logout();
+          localStorage.removeItem('token');
+          this.$router.push('/login');
           break;
       }
-    },
-    logout() {
-      this.$router.push('/login');
     }
   }
-};
+}
 </script>

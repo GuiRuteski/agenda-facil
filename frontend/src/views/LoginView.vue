@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-import styles from '@/assets/css/LoginView.module.css';
+import api from '../services/axios'
+import styles from '@/assets/css/LoginView.module.css'
 
 export default {
   data() {
@@ -24,24 +24,25 @@ export default {
       email: '',
       password: '',
       styles
-    };
+    }
   },
   methods: {
     async handleLogin() {
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', {
-      email: this.email,
-      senha: this.password
-    });
-    const token = response.data.access_token;
-    localStorage.setItem('token', token);
-    this.$router.push('/painel'); // redireciona para Painel
-  } catch (error) {
-    console.error('Erro no login:', error);
-    alert(error.response?.data?.message || 'Login inválido. Verifique o email e senha.');
+      try {
+        const response = await api.post('/auth/login', {
+          email: this.email,
+          senha: this.password
+        })
+
+        const token = response.data.access_token
+        localStorage.setItem('token', token)
+
+        this.$router.push('/home') // redireciona para a Home
+      } catch (error) {
+        console.error('Erro no login:', error)
+        alert(error.response?.data?.erro || 'Login inválido. Verifique o email e senha.')
+      }
+    }
   }
 }
-
-  }
-};
 </script>

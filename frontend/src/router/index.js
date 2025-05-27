@@ -16,15 +16,10 @@ const routes = [
     component: () => import('@/views/RegisterView.vue')
   },
   {
-    path: '/painel',
-    name: 'Painel',
-    component: () => import('../views/Painel.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/home',
     name: 'Home',
-    component: () => import('@/views/HomeView.vue')
+    component: () => import('@/views/HomeView.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/scheduling',
@@ -76,6 +71,7 @@ const routes = [
     name: 'SupportSettings',
     component: () => import('@/views/settings/SupportSettingsView.vue')
   },
+  
 ]
 
 const router = createRouter({
@@ -83,7 +79,6 @@ const router = createRouter({
   routes
 })
 
-// 🔐 Middleware global para proteger rotas que exigem login
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const token = localStorage.getItem('token')

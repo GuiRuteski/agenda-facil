@@ -1,136 +1,92 @@
-from flask import Blueprint, request, jsonify
-from app.extensions import db
-from app.models.agendamento import Agendamento
-from sqlalchemy.exc import SQLAlchemyError
-from datetime import datetime
+from flask import Blueprint, jsonify, request
 
-agendamento_bp = Blueprint('agendamento_bp', __name__, url_prefix='/api/agendamentos')
+agendamento_bp = Blueprint('agendamento', __name__)
 
+agendamentos = [
+    {"id": 1, "descricao": "Consulta com Dr. João"}
+]
 
-@agendamento_bp.route('/', methods=['GET'])
+@agendamento_bp.route('/agendamentos', methods=['GET'])
 def listar_agendamentos():
     """
-    Lista todos os agendamentos
+    Lista de agendamentos.
     ---
     tags:
       - Agendamentos
     responses:
       200:
-        description: Lista de agendamentos retornada com sucesso
+        description: Agendamentos encontrados
     """
-    agendamentos = Agendamento.query.all()
-    return jsonify([a.to_dict() for a in agendamentos]), 200
+    return jsonify({"agendamentos": agendamentos})
 
-
-@agendamento_bp.route('/', methods=['POST'])
+@agendamento_bp.route('/agendamentos', methods=['POST'])
 def criar_agendamento():
     """
-    Cria um novo agendamento
+    Cria um novo agendamento.
     ---
     tags:
       - Agendamentos
     parameters:
-      - in: body
-        name: dados
-        schema:
-          type: object
-          required:
-            - paciente_id
-            - profissional_id
-            - data_hora
-          properties:
-            paciente_id:
-              type: integer
-            profissional_id:
-              type: integer
-            data_hora:
-              type: string
-              example: "2025-06-10T14:30"
-            status:
-              type: string
-              enum: [Agendado, Cancelado, Concluído]
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              descricao:
+                type: string
     responses:
-      201:
-        description: Agendamento criado com sucesso
-      400:
-        description: Erro ao criar o agendamento
+        201:
+          description: Agendamento criado
     """
     data = request.get_json()
-    try:
-        novo = Agendamento(
-            paciente_id=data['paciente_id'],
-            profissional_id=data['profissional_id'],
-            data_hora=datetime.strptime(data['data_hora'], "%Y-%m-%dT%H:%M"),
-            status=data.get('status', 'Agendado')
-        )
-        db.session.add(novo)
-        db.session.commit()
-        return jsonify(novo.to_dict()), 201
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({'erro': str(e)}), 400
+    novo = {"id": len(agendamentos)+1, "descricao": data["descricao"]}
+    agendamentos.append(novo)
+    return jsonify(novo), 201
 
-
-@agendamento_bp.route('/<int:id>', methods=['PUT'])
+@agendamento_bp.route('/agendamentos/<int:id>', methods=['PUT'])
 def atualizar_agendamento(id):
     """
-    Atualiza os dados de um agendamento
+    Atualiza um agendamento.
     ---
     tags:
       - Agendamentos
     parameters:
-      - name: id
-        in: path
-        required: true
-        type: integer
-      - in: body
-        name: dados
-        schema:
-          type: object
-          properties:
-            data_hora:
-              type: string
-              example: "2025-06-15T09:00"
-            status:
-              type: string
-              enum: [Agendado, Cancelado, Concluído]
+        - in: path
+          name: id
+          type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              descricao:
+                type: string
     responses:
-      200:
-        description: Agendamento atualizado com sucesso
-      404:
-        description: Agendamento não encontrado
+        200:
+          description: Agendamento atualizado
     """
-    agendamento = Agendamento.query.get_or_404(id)
     data = request.get_json()
+    for a in agendamentos:
+        if a["id"] == id:
+            a["descricao"] = data["descricao"]
+            return jsonify(a)
+    return jsonify({"erro": "Agendamento não encontrado"}), 404
 
-    if 'data_hora' in data:
-        agendamento.data_hora = datetime.strptime(data['data_hora'], "%Y-%m-%dT%H:%M")
-    if 'status' in data:
-        agendamento.status = data['status']
-
-    db.session.commit()
-    return jsonify({'mensagem': 'Agendamento atualizado com sucesso'}), 200
-
-
-@agendamento_bp.route('/<int:id>', methods=['DELETE'])
+@agendamento_bp.route('/agendamentos/<int:id>', methods=['DELETE'])
 def deletar_agendamento(id):
     """
-    Deleta um agendamento pelo ID
+    Deleta um agendamento.
     ---
     tags:
       - Agendamentos
     parameters:
-      - name: id
-        in: path
-        required: true
-        type: integer
+        - in: path
+          name: id
+          type: integer
     responses:
-      200:
-        description: Agendamento deletado com sucesso
-      404:
-        description: Agendamento não encontrado
+        200:
+          description: Agendamento removido
     """
-    agendamento = Agendamento.query.get_or_404(id)
-    db.session.delete(agendamento)
-    db.session.commit()
-    return jsonify({'mensagem': 'Agendamento deletado com sucesso'}), 200
+    global agendamentos
+    agendamentos = [a for a in agendamentos if a["id"] != id]
+    return jsonify({"mensagem": "Agendamento removido"})

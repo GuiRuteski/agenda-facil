@@ -32,7 +32,11 @@
       <div :class="styles['patient-header-row']">
         <div :class="styles['patient-top-bar']">
           <div :class="styles['patient-user-info']">
+<<<<<<< HEAD
             <h1>Olá, Sr. {{ userName }}!</h1>
+=======
+            <h1>Olá, {{ userName }}!</h1>
+>>>>>>> 8b5e3b5f (Remover node_modules do repositório)
             <div :class="styles['patient-user-underline-box']">
               <div :class="[styles['patient-user-underline'], styles.short]"></div>
               <div :class="[styles['patient-user-underline'], styles.long]"></div>
@@ -159,13 +163,14 @@
 </template>
 
 <script>
-import styles from '@/assets/css/PatientView.module.css';
+import styles from '@/assets/css/PatientView.module.css'
+import api from '@/services/axios'
 
 export default {
   data() {
     return {
       styles,
-      userName: 'Marcos',
+      userName: '',
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
@@ -189,32 +194,31 @@ export default {
       },
       originalData: {} // Para guardar os dados originais durante a edição
     };
+    }
+  },
+  created() {
+    this.carregarNomeUsuario()
+
+    // Simulação da busca dos dados do paciente
+    setTimeout(() => {
+      this.patientData = {
+        name: 'Marcos Oliveira Souza',
+        gender: 'Masculino',
+        birthDate: '1991-10-05',
+        address: 'R. 9 de Julho',
+        addressNumber: '125',
+        cep: '00000-000',
+        phone: '(12) 3456-7890'
+      }
+    }, 500)
   },
   methods: {
-    handleMenuClick(label) {
-      this.activeMenu = label;
-      switch (label) {
-        case 'INÍCIO':
-          this.$router.push('/home');
-          break;
-        case 'CONSULTAS':
-          this.$router.push('/scheduling');
-          break;
-        case 'PROFISSIONAIS':
-          this.$router.push('/professional');
-          break;
-        case 'PACIENTE':
-          this.$router.push('/patient');
-          break;
-        case 'MENSAGENS':
-          this.$router.push('/message');
-          break;
-        case 'CONFIGURAÇÕES':
-          this.$router.push('/settings');
-          break;
-        case 'SAIR':
-          this.logout();
-          break;
+    async carregarNomeUsuario() {
+      try {
+        const response = await api.get('/auth/me')
+        this.userName = response.data.nome
+      } catch (error) {
+        console.error('Erro ao carregar o nome do usuário:', error)
       }
     },
     
@@ -257,6 +261,56 @@ export default {
       //     console.error('Erro ao salvar:', error);
       //     alert('Erro ao salvar informações');
       //   });
+
+    handleMenuClick(label) {
+      this.activeMenu = label
+      switch (label) {
+        case 'INÍCIO':
+          this.$router.push('/home')
+          break
+        case 'CONSULTAS':
+          this.$router.push('/scheduling')
+          break
+        case 'PROFISSIONAIS':
+          this.$router.push('/professional')
+          break
+        case 'PACIENTE':
+          this.$router.push('/patient')
+          break
+        case 'MENSAGENS':
+          this.$router.push('/message')
+          break
+        case 'CONFIGURAÇÕES':
+          this.$router.push('/settings')
+          break
+        case 'SAIR':
+          this.logout()
+          break
+      }
+    },
+
+    logout() {
+      this.$router.push('/login')
+    },
+
+    toggleEdit() {
+      if (this.isEditing) {
+        this.savePatientData()
+      } else {
+        this.originalData = JSON.parse(JSON.stringify(this.patientData))
+        this.isEditing = true
+      }
+    },
+
+    cancelEdit() {
+      this.patientData = JSON.parse(JSON.stringify(this.originalData))
+      this.isEditing = false
+    },
+
+    savePatientData() {
+      console.log('Dados do paciente salvos:', this.patientData)
+      this.isEditing = false
+      alert('Informações atualizadas com sucesso!')
     }
   },
   created() {
@@ -274,5 +328,5 @@ export default {
       };
     }, 500);
   }
-};
+}
 </script>

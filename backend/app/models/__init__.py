@@ -1,15 +1,10 @@
-from .user import Usuario
-from .paciente import Paciente
-from .profissional import Profissional
-from .funcionario import Funcionario, TipoFuncionario
-# Dentro de app/routes/paciente.py por exemplo:
-from app.models.agendamento import Agendamento, StatusAgendamento
+from flask_sqlalchemy import SQLAlchemy
 
-__all__ = [
-    'Usuario',
-    'Paciente',
-    'Funcionario',
-    'TipoFuncionario',
-    'Agendamento',
-    'StatusAgendamento'
-]
+db = SQLAlchemy()
+
+# Importa os modelos para o contexto da aplicação
+from .usuario import Usuario
+from .paciente import Paciente
+from .medico import Medico
+from .funcionario import Funcionario
+from .agendamento import Agendamento

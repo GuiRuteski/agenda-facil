@@ -1,13 +1,18 @@
-from flask import Flask
-from flask_cors import CORS
-from routes.user import user_bp  # Não é necessário incluir o 'agenda_facil' no caminho
+from flask import Blueprint
 
+# Blueprint principal agrupando os outros
+routes_bp = Blueprint('routes', __name__)
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app)  # permite requisições de outros domínios (como o frontend em localhost)
+# Importa os blueprints individuais
+from routes.user import user_bp
+from routes.paciente_routes import paciente_bp
+from routes.medico_routes import medico_bp
+from routes.funcionario_routes import funcionario_bp
+from routes.auth_routes import auth_bp
 
-    # registrar rotas
-    app.register_blueprint(user_bp, url_prefix="/api")
-
-    return app
+# Registro dos blueprints SEM prefixos redundantes
+routes_bp.register_blueprint(user_bp)
+routes_bp.register_blueprint(paciente_bp)
+routes_bp.register_blueprint(medico_bp)
+routes_bp.register_blueprint(funcionario_bp)
+routes_bp.register_blueprint(auth_bp)  # <- já possui /api/auth internamente

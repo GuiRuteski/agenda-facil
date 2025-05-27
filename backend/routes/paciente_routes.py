@@ -1,168 +1,34 @@
 from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models.paciente import Paciente
-from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.security import generate_password_hash
 
-paciente_bp = Blueprint('paciente_bp', __name__, url_prefix='/api/pacientes')
+# 🔧 Removido o /api daqui
+paciente_bp = Blueprint('paciente', __name__, url_prefix='/pacientes')
 
-
-@paciente_bp.route('/', methods=['GET'])
-def listar_pacientes():
-    """
-    Lista todos os pacientes
-    ---
-    tags:
-      - Pacientes
-    responses:
-      200:
-        description: Lista de pacientes retornada com sucesso
-    """
-    pacientes = Paciente.query.all()
-    return jsonify([p.to_dict() for p in pacientes]), 200
-
-
-@paciente_bp.route('/', methods=['POST'])
+@paciente_bp.route('', methods=['POST'])  # só a raiz do prefixo
 def criar_paciente():
-    """
-    Cria um novo paciente
-    ---
-    tags:
-      - Pacientes
-    parameters:
-      - in: body
-        name: paciente
-        schema:
-          type: object
-          required:
-            - nome
-            - cpf
-            - telefone
-            - email
-          properties:
-            nome:
-              type: string
-            cpf:
-              type: string
-            telefone:
-              type: string
-            email:
-              type: string
-    responses:
-      201:
-        description: Paciente criado com sucesso
-      400:
-        description: Erro na criação do paciente
-    """
     data = request.get_json()
-    try:
-        novo = Paciente(
-            nome=data['nome'],
-            cpf=data['cpf'],
-            telefone=data['telefone'],
-            email=data['email']
-        )
-        db.session.add(novo)
-        db.session.commit()
-        return jsonify(novo.to_dict()), 201
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({'erro': str(e)}), 400
 
+    if not all(k in data for k in ('nome', 'email', 'senha', 'cpf')):
+        return jsonify({'erro': 'Dados incompletos'}), 400
 
-@paciente_bp.route('/<int:id>', methods=['GET'])
-def obter_paciente(id):
-    """
-    Retorna um paciente pelo ID
-    ---
-    tags:
-      - Pacientes
-    parameters:
-      - name: id
-        in: path
-        required: true
-        type: integer
-    responses:
-      200:
-        description: Paciente encontrado
-      404:
-        description: Paciente não encontrado
-    """
-    paciente = Paciente.query.get_or_404(id)
-    return jsonify(paciente.to_dict()), 200
+    if Paciente.query.filter_by(email=data['email']).first():
+        return jsonify({'erro': 'Email já existe'}), 400
 
+    if Paciente.query.filter_by(cpf=data['cpf']).first():
+        return jsonify({'erro': 'CPF já existe'}), 400
 
-@paciente_bp.route('/<int:id>', methods=['PUT'])
-def atualizar_paciente(id):
-    """
-    Atualiza os dados de um paciente
-    ---
-    tags:
-      - Pacientes
-    parameters:
-      - name: id
-        in: path
-        required: true
-        type: integer
-      - in: body
-        name: paciente
-        schema:
-          type: object
-          properties:
-            nome:
-              type: string
-            cpf:
-              type: string
-            telefone:
-              type: string
-            email:
-              type: string
-    responses:
-      200:
-        description: Paciente atualizado com sucesso
-      400:
-        description: Erro ao atualizar paciente
-      404:
-        description: Paciente não encontrado
-    """
-    paciente = Paciente.query.get_or_404(id)
-    data = request.get_json()
-    try:
-        paciente.nome = data.get('nome', paciente.nome)
-        paciente.cpf = data.get('cpf', paciente.cpf)
-        paciente.telefone = data.get('telefone', paciente.telefone)
-        paciente.email = data.get('email', paciente.email)
-        db.session.commit()
-        return jsonify({'mensagem': 'Paciente atualizado com sucesso'}), 200
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({'erro': str(e)}), 400
+    paciente = Paciente(
+        nome=data['nome'],
+        email=data['email'],
+        senha=generate_password_hash(data['senha']),
+        telefone=data.get('telefone'),
+        cpf=data['cpf'],
+        sexo=data.get('sexo')
+    )
 
+    db.session.add(paciente)
+    db.session.commit()
 
-@paciente_bp.route('/<int:id>', methods=['DELETE'])
-def deletar_paciente(id):
-    """
-    Deleta um paciente pelo ID
-    ---
-    tags:
-      - Pacientes
-    parameters:
-      - name: id
-        in: path
-        required: true
-        type: integer
-    responses:
-      200:
-        description: Paciente deletado com sucesso
-      400:
-        description: Erro ao deletar paciente
-      404:
-        description: Paciente não encontrado
-    """
-    paciente = Paciente.query.get_or_404(id)
-    try:
-        db.session.delete(paciente)
-        db.session.commit()
-        return jsonify({'mensagem': 'Paciente deletado com sucesso'}), 200
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({'erro': str(e)}), 400
+    return jsonify({'id': paciente.id, 'nome': paciente.nome}), 201

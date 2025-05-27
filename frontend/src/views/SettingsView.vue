@@ -25,11 +25,13 @@
     </aside>
 
     <!-- Conteúdo principal -->
+    <!-- Conteúdo principal da página -->
     <main :class="styles['settings-main-content']">
       <div :class="styles['settings-header-row']">
         <div :class="styles['settings-top-bar']">
           <div :class="styles['settings-user-info']">
             <h1>Olá, Sr. {{ userName }}!</h1>
+            <h1>Olá, {{ userName }}!</h1>
             <div :class="styles['settings-user-underline-box']">
               <div :class="[styles['settings-user-underline'], styles.short]"></div>
               <div :class="[styles['settings-user-underline'], styles.long]"></div>
@@ -66,13 +68,14 @@
 </template>
 
 <script>
-import styles from '@/assets/css/SettingsView.module.css';
+import styles from '@/assets/css/SettingsView.module.css'
+import api from '@/services/axios'
 
 export default {
   data() {
     return {
       styles,
-      userName: 'Marcos',
+      userName: '',
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
@@ -92,40 +95,54 @@ export default {
         { label: 'Suporte', route: '/settings/support'},
       ]
     };
+      activeMenu: 'CONFIGURAÇÕES'
+    }
+  },
+  created() {
+    this.carregarNomeUsuario()
   },
   methods: {
+    async carregarNomeUsuario() {
+      try {
+        const response = await api.get('/auth/me')
+        this.userName = response.data.nome
+      } catch (error) {
+        console.error('Erro ao buscar nome do usuário:', error)
+      }
+    },
     handleMenuClick(label) {
-      this.activeMenu = label;
+      this.activeMenu = label
       switch (label) {
         case 'INÍCIO':
-          this.$router.push('/home');
-          break;
+          this.$router.push('/home')
+          break
         case 'CONSULTAS':
-          this.$router.push('/scheduling');
-          break;
+          this.$router.push('/scheduling')
+          break
         case 'PROFISSIONAIS':
-          this.$router.push('/professional');
-          break;
+          this.$router.push('/professional')
+          break
         case 'PACIENTE':
-          this.$router.push('/patient');
-          break;
+          this.$router.push('/patient')
+          break
         case 'MENSAGENS':
-          this.$router.push('/message');
-          break;
+          this.$router.push('/message')
+          break
         case 'CONFIGURAÇÕES':
-          this.$router.push('/settings');
-          break;
+          this.$router.push('/settings')
+          break
         case 'SAIR':
-          this.logout();
-          break;
+          this.logout()
+          break
       }
     },
     navigateToOption(route) {
       this.$router.push(route);
     },
     logout() {
-      this.$router.push('/login');
+      this.$router.push('/login')
     }
   }
-};
+
 </script>
+
