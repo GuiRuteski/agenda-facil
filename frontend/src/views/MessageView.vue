@@ -29,6 +29,7 @@
 
     <!-- Conteúdo principal da página -->
     <main :class="styles['message-main-content']">
+      <!-- Cabeçalho com saudação -->
       <div :class="styles['message-header-row']">
         <div :class="styles['message-top-bar']">
           <div :class="styles['message-user-info']">
@@ -46,9 +47,29 @@
           />
         </div>     
       </div>
+
+      <!-- Caixa de Mensagens -->
+      <section :class="styles['message-box']">
+        <h2 :class="styles['message-box-title']">Caixa de Mensagens</h2>
+        <ul :class="styles['message-list']">
+          <li v-for="(message, index) in messages" :key="index" :class="styles['message-item']">
+            <div :class="styles['message-avatar']">
+              <img :src="require('../assets/User.jpg')" alt="Avatar" />
+            </div>
+            <div :class="styles['message-content']">
+              <strong>{{ message.sender }} - {{ message.subject }}</strong>
+              <p>{{ message.text }}</p>
+            </div>
+            <div :class="styles['message-date']">
+              {{ message.date }}
+            </div>
+          </li>
+        </ul>
+      </section>
     </main>
   </div>
 </template>
+
 
 <script>
 import styles from '@/assets/css/MessageView.module.css';
@@ -69,6 +90,38 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'MENSAGENS',
+      messages: [
+        {
+          sender: 'Dr. João Pereira',
+          subject: 'Consulta',
+          text: 'Sua consulta está agendada para HOJE às 09:00',
+          date: '15/04'
+        },
+        {
+          sender: 'Dra. Ana Oliveira',
+          subject: 'Consulta',
+          text: 'Sua consulta está agendada para HOJE às 10:30',
+          date: '15/04'
+        },
+        {
+          sender: 'Dr. João Pereira',
+          subject: 'Consulta',
+          text: 'Bom dia, em qual horário podemos marcar o retorno?',
+          date: '10/03'
+        },
+        {
+          sender: 'Dr. João Pereira',
+          subject: 'Cancelamento de Consulta',
+          text: 'Boa tarde, desmarquei seu horário das 15:30, deseja remarcar?',
+          date: '08/03'
+        },
+        {
+          sender: 'Dr. Rubens Silva',
+          subject: 'Dúvidas',
+          text: 'Boa tarde, infelizmente estarei de férias durante essa semana.',
+          date: '01/03'
+        }
+      ]
     };
   },
   methods: {

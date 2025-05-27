@@ -1,7 +1,8 @@
 <template>
   <div :class="styles['settings-container']">
-    <!-- Barra lateral -->
+    <!-- Barra lateral (sidebar) -->
     <aside :class="styles['settings-sidebar']">
+      <!-- Caixa do logotipo -->
       <div :class="styles['settings-logo-box']">
         <img 
           :src="require('../assets/logo.png')" 
@@ -9,6 +10,8 @@
           :class="styles['settings-logo']" 
         />
       </div>
+
+      <!-- Lista de menus laterais -->
       <ul :class="styles['settings-menu-list']">
         <li 
           v-for="item in menuItems" 
@@ -24,7 +27,7 @@
       </ul>
     </aside>
 
-    <!-- Conteúdo principal -->
+    <!-- Conteúdo principal da página -->
     <main :class="styles['settings-main-content']">
       <div :class="styles['settings-header-row']">
         <div :class="styles['settings-top-bar']">
@@ -43,24 +46,6 @@
           />
         </div>     
       </div>
-
-      <!-- Seção de opções de configurações -->
-      <section :class="styles['settings-options-section']">
-        <h2 :class="styles['settings-options-title']">Configurações</h2>
-        <div :class="styles['settings-options-box']">
-          <div 
-            v-for="option in settingsOptions" 
-            :key="option.label" 
-            :class="styles['settings-option-item']"
-            @click="navigateToOption(option.route)"
-            role="button"
-            tabindex="0"
-          >
-            <span>{{ option.label }}</span>
-            <i class="fas fa-chevron-right"></i>
-          </div>
-        </div>
-      </section>
     </main>
   </div>
 </template>
@@ -84,13 +69,6 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'CONFIGURAÇÕES',
-      settingsOptions: [
-        { label: 'Dados da Conta', route: '/settings/account'},
-        { label: 'Notificações', route: '/settings/notification'},
-        { label: 'Preferencias', route: '/settings/preferences'},
-        { label: 'Pagamentos', route: '/settings/payment'},
-        { label: 'Suporte', route: '/settings/support'},
-      ]
     };
   },
   methods: {
@@ -119,9 +97,6 @@ export default {
           this.logout();
           break;
       }
-    },
-    navigateToOption(route) {
-      this.$router.push(route);
     },
     logout() {
       this.$router.push('/login');

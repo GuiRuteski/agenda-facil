@@ -51,7 +51,31 @@ const routes = [
     name: 'Settings',
     component: () => import('@/views/SettingsView.vue')
   },
-  
+  {
+    path: '/settings/account',
+    name: 'AccountSettings',
+    component: () => import('@/views/settings/AccountSettingsView.vue')
+  },
+  {
+    path: '/settings/notification',
+    name: 'NotificationSettings',
+    component: () => import('@/views/settings/NotificationSettingsView.vue')
+  },
+  {
+    path: '/settings/preferences',
+    name: 'PreferecesSettings',
+    component: () => import('@/views/settings/PreferencesSettingsView.vue')
+  },
+  {
+    path: '/settings/payment',
+    name: 'PaySettings',
+    component: () => import('@/views/settings/PaySettingsView.vue')
+  },
+  {
+    path: '/settings/support',
+    name: 'SupportSettings',
+    component: () => import('@/views/settings/SupportSettingsView.vue')
+  },
 ]
 
 const router = createRouter({

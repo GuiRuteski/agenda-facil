@@ -1,5 +1,5 @@
 /* Container principal que ocupa toda a altura da tela e usa flexbox para dividir sidebar e conteúdo */
-.patient-container {
+.preferencessettings-container {
   display: flex;
   height: 100vh;
   overflow: hidden;
@@ -7,7 +7,7 @@
 }
 
 /* Barra lateral fixa à esquerda */
-.patient-sidebar {
+.preferencessettings-sidebar {
   width: 220px;
   background-color: #254370;
   color: white;
@@ -18,25 +18,25 @@
 }
 
 /* Espaço que contém a logo */
-.patient-logo-box {
+.preferencessettings-logo-box {
   margin-bottom: 2rem;
 }
 
 /* Estilo da imagem da logo */
-.patient-logo {
+.preferencessettings-logo {
   width: 120px;
   height: auto;
 }
 
 /* Lista do menu (remove marcadores e espaçamentos padrão) */
-.patient-menu-list {
+.preferencessettings-menu-list {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
 /* Estilo dos itens do menu da sidebar */
-.patient-menu-item {
+.preferencessettings-menu-item {
   margin: 10px 0;
   cursor: pointer;
   font-size: 16px;
@@ -50,7 +50,7 @@
 }
 
 /* Efeito ao passar o mouse sobre o item do menu */
-.patient-menu-item:hover {
+.preferencessettings-menu-item:hover {
   background-color: #1f3a63;
   color: #f0f2f5;
   transform: translateY(-2px);
@@ -58,7 +58,7 @@
 }
 
 /* Estilo aplicado ao item ativo do menu */
-.patient-active-menu {
+.preferencessettings-active-menu {
   background-color: #1f3a63;
   color: #f0f2f5;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -66,7 +66,7 @@
 }
 
 /* Área principal de conteúdo (direita da sidebar) */
-.patient-main-content {
+.preferencessettings-main-content {
   flex: 1;
   padding: 1.5rem;
   background-color: #D0D0D0;
@@ -76,7 +76,7 @@
 }
 
 /* Linha do cabeçalho com saudação e calendário */
-.patient-header-row {
+.preferencessettings-header-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -86,7 +86,7 @@
 }
 
 /* Barra superior do conteúdo */
-.patient-top-bar {
+.preferencessettings-top-bar {
   flex: 1;
   height: 160px;
   border-radius: 10px;
@@ -98,21 +98,21 @@
 }
 
 /* Informações do usuário */
-.patient-user-info {
+.preferencessettings-user-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
 /* Título da saudação */
-.patient-user-info h1 {
+.preferencessettings-user-info h1 {
   font-size: 3.5rem;
   margin: 0;
   color: #101E33;
 }
 
 /* Caixa com traços decorativos */
-.patient-user-underline-box {
+.preferencessettings-user-underline-box {
   display: flex;
   flex-direction: column-reverse;
   gap: 5px;
@@ -120,22 +120,22 @@
 }
 
 /* Estilos dos traços decorativos */
-.patient-user-underline {
+.preferencessettings-user-underline {
   height: 8px;
   background-color: #101E33;
   border-radius: 4px;
 }
 
 /* Tamanhos dos traços */
-.patient-user-underline.short {
+.preferencessettings-user-underline.short {
   width: 350px;
 }
-.patient-user-underline.long {
+.preferencessettings-user-underline.long {
   width: 410px;
 }
 
 /* Foto do usuário */
-.patient-user-photo {
+.preferencessettings-user-photo {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -143,7 +143,7 @@
 }
 
 /* Seção de conteúdo principal */
-.patient-content {
+.preferencessettings-content {
   background-color: transparent;
   border-radius: 0;
   padding: 0;
@@ -151,103 +151,4 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-/* Container da seção de informações */
-.patient-info-container {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  width: fit-content;
-  margin-top: -1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Título da seção */
-.patient-info-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #101E33;
-}
-
-/* Grid com campos de informações */
-.patient-info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(250px, 1fr));
-  gap: 1rem 2rem;
-}
-
-/* Agrupamento do input com label */
-.patient-info-group {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Label dos campos */
-.patient-info-label {
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-  color: #101E33;
-}
-
-/* Estilo dos inputs */
-.patient-info-input,
-select.patient-info-input {
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #d9d9d9;
-  font-size: 0.95rem;
-  color: #333;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-/* Ajuste para campos desabilitados */
-.patient-info-input:disabled,
-select.patient-info-input:disabled {
-  color: #333;
-  background-color: #f5f5f5;
-  cursor: default;
-}
-
-/* Botões de ação (Editar, Salvar, Cancelar) */
-.patient-actions {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
-
-/* Botão base */
-.patient-action-button {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Botão primário (azul escuro) */
-.patient-action-button.primary {
-  background-color: #254370;
-  color: white;
-}
-
-.patient-action-button.primary:hover {
-  background-color: #1f3a63;
-}
-
-/* Botão secundário (cinza claro) */
-.patient-action-button.secondary {
-  background-color: #c4c4c4;
-  color: #101E33;
-}
-
-.patient-action-button.secondary:hover {
-  background-color: #a8a8a8;
 }
