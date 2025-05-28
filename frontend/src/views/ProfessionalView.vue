@@ -282,20 +282,15 @@ export default {
           available: true
         }
       ],
-<<<<<<< HEAD
 
       // Variáveis para o modal de agendamento
-=======
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
       showScheduleModal: false,
       selectedProfessional: null,
       selectedDay: null,
       selectedTime: null,
       currentDate: new Date(),
       availableTimes: []
-<<<<<<< HEAD
     };
-=======
     }
   },
   computed: {
@@ -367,7 +362,6 @@ export default {
 
       return days
     }
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
   },
   computed: {
     // Lista de especialidades únicas para o filtro
@@ -477,7 +471,6 @@ export default {
     },
 
     logout() {
-<<<<<<< HEAD
       this.$router.push('/login');
     },
 
@@ -508,7 +501,6 @@ export default {
       this.showScheduleModal = false;
     },
 
-=======
       this.$router.push('/login')
     },
     scrollCarousel(direction) {
@@ -532,32 +524,27 @@ export default {
     closeModal() {
       this.showScheduleModal = false
     },
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
     prevMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
         this.currentDate.getMonth() - 1,
         1
-<<<<<<< HEAD
       );
       this.selectedDay = null;
       this.selectedTime = null;
       this.availableTimes = [];
     },
 
-=======
       )
       this.selectedDay = null
       this.selectedTime = null
       this.availableTimes = []
     },
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
     nextMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
         this.currentDate.getMonth() + 1,
         1
-<<<<<<< HEAD
       );
       this.selectedDay = null;
       this.selectedTime = null;
@@ -604,7 +591,6 @@ export default {
   }
 };
 </script>
-=======
       )
       this.selectedDay = null
       this.selectedTime = null
@@ -653,4 +639,3 @@ export default {
   }
 }
 </script>
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)

@@ -313,20 +313,5 @@ export default {
       alert('Informações atualizadas com sucesso!')
     }
   },
-  created() {
-    // Simulando a busca dos dados do paciente
-    // Na prática, você faria uma chamada à API
-    setTimeout(() => {
-      this.patientData = {
-        name: 'Marcos Oliveira Souza',
-        gender: 'Masculino',
-        birthDate: '1991-10-05',
-        address: 'R. 9 de Julho',
-        addressNumber: '125',
-        cep: '00000-000',
-        phone: '(12) 3456-7890'
-      };
-    }, 500);
-  }
-}
+  
 </script>

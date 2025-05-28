@@ -139,10 +139,6 @@ export default {
           hora: '12:30',
           status: 'Cancelado'
         }
-        
-        
-      ]
-    };
       ]
     }
   },

@@ -111,13 +111,7 @@ export default {
         return
       }
 
-      const dadosBase = {
-        nome: this.nome,
-        email: this.email,
-        cpf: this.cpf,
-        senha: this.password,
-        sexo: this.gender,
-        tipoConta: this.accountType
+      
       };
         cpf: cpfLimpo,
         senha: this.password,

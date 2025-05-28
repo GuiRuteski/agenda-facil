@@ -95,7 +95,7 @@ export default {
         { label: 'Suporte', route: '/settings/support'},
       ]
     };
-      activeMenu: 'CONFIGURAÇÕES'
+     
     }
   },
   created() {
