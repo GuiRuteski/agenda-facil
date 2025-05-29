@@ -1,4 +1,4 @@
-from agenda_facil import create_app, db
+from app import create_app, db
 
 # Crie uma aplicação de teste
 app = create_app()

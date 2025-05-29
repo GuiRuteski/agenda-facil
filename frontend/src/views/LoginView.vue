@@ -28,21 +28,30 @@ export default {
   },
   methods: {
     async handleLogin() {
-      try {
-        const response = await api.post('/auth/login', {
-          email: this.email,
-          senha: this.password
-        })
+  try {
+    const response = await api.post('/auth/login', {
+      email: this.email,
+      senha: this.password
+    })
 
-        const token = response.data.access_token
-        localStorage.setItem('token', token)
+    const token = response.data.access_token
+    const tipoConta = response.data.tipoConta || response.data.tipo // ajuste conforme o backend
 
-        this.$router.push('/home') // redireciona para a Home
-      } catch (error) {
-        console.error('Erro no login:', error)
-        alert(error.response?.data?.erro || 'Login inválido. Verifique o email e senha.')
-      }
+    localStorage.setItem('token', token)
+    localStorage.setItem('tipoConta', tipoConta)
+
+    if (tipoConta === 'Paciente') {
+      this.$router.push('/home')
+    } else if (tipoConta === 'RECEPCIONISTA') {
+      this.$router.push('/homesecretary')
+    } else {
+      this.$router.push('/home') // padrão
     }
+  } catch (error) {
+    console.error('Erro no login:', error)
+    alert(error.response?.data?.erro || 'Login inválido. Verifique o email e senha.')
+  }
+}
   }
 }
 </script>

@@ -71,6 +71,26 @@ const routes = [
     name: 'SupportSettings',
     component: () => import('@/views/settings/SupportSettingsView.vue')
   },
+  {
+    path: '/homesecretary',
+    name: 'HomeScretary',
+    component: () => import('@/views/HomeSecretaryView.vue')
+  },
+  {
+    path: '/schedulingsecretary',
+    name: 'SchedulingScretary',
+    component: () => import('@/views/SchedulingSecretaryView.vue')
+  },
+  {
+    path: '/messagesecretary',
+    name: 'MessageScretary',
+    component: () => import('@/views/MessageSecretaryView.vue')
+  },
+  {
+    path: '/settingssecretary',
+    name: 'SettingsScretary',
+    component: () => import('@/views/SettingsSecretaryView.vue')
+  },
   
 ]
 

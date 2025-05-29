@@ -32,11 +32,7 @@
       <div :class="styles['patient-header-row']">
         <div :class="styles['patient-top-bar']">
           <div :class="styles['patient-user-info']">
-<<<<<<< HEAD
-            <h1>Olá, Sr. {{ userName }}!</h1>
-=======
             <h1>Olá, {{ userName }}!</h1>
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
             <div :class="styles['patient-user-underline-box']">
               <div :class="[styles['patient-user-underline'], styles.short]"></div>
               <div :class="[styles['patient-user-underline'], styles.long]"></div>
@@ -192,14 +188,12 @@ export default {
         cep: '',
         phone: ''
       },
-      originalData: {} // Para guardar os dados originais durante a edição
-    };
+      originalData: {}
     }
   },
   created() {
-    this.carregarNomeUsuario()
+    this.carregarNomeUsuario();
 
-    // Simulação da busca dos dados do paciente
     setTimeout(() => {
       this.patientData = {
         name: 'Marcos Oliveira Souza',
@@ -221,47 +215,26 @@ export default {
         console.error('Erro ao carregar o nome do usuário:', error)
       }
     },
-    
     logout() {
       this.$router.push('/login');
     },
-    
     toggleEdit() {
       if (this.isEditing) {
-        // Lógica para salvar os dados
         this.savePatientData();
       } else {
-        // Entra no modo de edição
         this.originalData = JSON.parse(JSON.stringify(this.patientData));
         this.isEditing = true;
       }
     },
-    
     cancelEdit() {
-      // Restaura os dados originais
       this.patientData = JSON.parse(JSON.stringify(this.originalData));
       this.isEditing = false;
     },
-    
     savePatientData() {
-      // Aqui você implementaria a chamada à API para salvar os dados
       console.log('Dados do paciente salvos:', this.patientData);
-      
-      // Simulação de sucesso
       this.isEditing = false;
       alert('Informações atualizadas com sucesso!');
-      
-      // Em uma aplicação real, você faria:
-      // api.savePatientData(this.patientData)
-      //   .then(() => {
-      //     this.isEditing = false;
-      //     alert('Informações atualizadas com sucesso!');
-      //   })
-      //   .catch(error => {
-      //     console.error('Erro ao salvar:', error);
-      //     alert('Erro ao salvar informações');
-      //   });
-
+    },
     handleMenuClick(label) {
       this.activeMenu = label
       switch (label) {
@@ -287,31 +260,7 @@ export default {
           this.logout()
           break
       }
-    },
-
-    logout() {
-      this.$router.push('/login')
-    },
-
-    toggleEdit() {
-      if (this.isEditing) {
-        this.savePatientData()
-      } else {
-        this.originalData = JSON.parse(JSON.stringify(this.patientData))
-        this.isEditing = true
-      }
-    },
-
-    cancelEdit() {
-      this.patientData = JSON.parse(JSON.stringify(this.originalData))
-      this.isEditing = false
-    },
-
-    savePatientData() {
-      console.log('Dados do paciente salvos:', this.patientData)
-      this.isEditing = false
-      alert('Informações atualizadas com sucesso!')
     }
-  },
-  
+  }
+}
 </script>

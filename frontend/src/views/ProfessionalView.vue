@@ -30,7 +30,6 @@
       <div :class="styles['professional-header-row']">
         <div :class="styles['professional-top-bar']">
           <div :class="styles['professional-user-info']">
-            <h1>Olá, Sr. {{ userName }}!</h1>
             <h1>Olá, {{ userName }}!</h1>
             <div :class="styles['professional-user-underline-box']">
               <div :class="[styles['professional-user-underline'], styles.short]"></div>
@@ -234,19 +233,9 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'PROFISSIONAIS',
-<<<<<<< HEAD
-
-      // Filtros e busca
       searchQuery: '',
       specialtyFilter: '',
       availabilityFilter: '',
-
-      // Dados dos profissionais
-=======
-      searchQuery: '',
-      specialtyFilter: '',
-      availabilityFilter: '',
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
       professionals: [
         {
           id: 1,
@@ -282,15 +271,12 @@ export default {
           available: true
         }
       ],
-
-      // Variáveis para o modal de agendamento
       showScheduleModal: false,
       selectedProfessional: null,
       selectedDay: null,
       selectedTime: null,
       currentDate: new Date(),
       availableTimes: []
-    };
     }
   },
   computed: {
@@ -363,86 +349,7 @@ export default {
       return days
     }
   },
-  computed: {
-    // Lista de especialidades únicas para o filtro
-    specialties() {
-      return [...new Set(this.professionals.map(p => p.specialty))];
-    },
-
-    // Profissionais filtrados
-    filteredProfessionals() {
-      return this.professionals.filter(professional => {
-        const nameMatch = professional.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-        const specialtyMatch = !this.specialtyFilter || professional.specialty === this.specialtyFilter;
-        let availabilityMatch = true;
-        
-        if (this.availabilityFilter === 'available') {
-          availabilityMatch = professional.available;
-        } else if (this.availabilityFilter === 'unavailable') {
-          availabilityMatch = !professional.available;
-        }
-
-        return nameMatch && specialtyMatch && availabilityMatch;
-      });
-    },
-
-    // Computeds para o calendário
-    currentMonth() {
-      return this.currentDate.toLocaleString('pt-BR', { month: 'long' });
-    },
-    currentYear() {
-      return this.currentDate.getFullYear();
-    },
-    daysOfWeek() {
-      return ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-    },
-    calendarDays() {
-      const year = this.currentDate.getFullYear();
-      const month = this.currentDate.getMonth();
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
-      const prevMonthDays = firstDay.getDay();
-      const nextMonthDays = 6 - lastDay.getDay();
-      const days = [];
-
-      // Dias do mês anterior
-      const prevMonthLastDay = new Date(year, month, 0).getDate();
-      for (let i = prevMonthDays - 1; i >= 0; i--) {
-        days.push({
-          day: prevMonthLastDay - i,
-          date: new Date(year, month - 1, prevMonthLastDay - i),
-          isCurrentMonth: false,
-          isAvailable: false
-        });
-      }
-
-      // Dias do mês atual (simulação: dias ímpares disponíveis)
-      for (let i = 1; i <= lastDay.getDate(); i++) {
-        const date = new Date(year, month, i);
-        days.push({
-          day: i,
-          date: date,
-          isCurrentMonth: true,
-          isAvailable: i % 2 !== 0,
-          weekday: date.getDay()
-        });
-      }
-
-      // Dias do próximo mês
-      for (let i = 1; i <= nextMonthDays; i++) {
-        days.push({
-          day: i,
-          date: new Date(year, month + 1, i),
-          isCurrentMonth: false,
-          isAvailable: false
-        });
-      }
-
-      return days;
-    }
-  },
   methods: {
-    // Navegação do menu
     handleMenuClick(label) {
       this.activeMenu = label
       switch (label) {
@@ -469,12 +376,9 @@ export default {
           break
       }
     },
-
     logout() {
       this.$router.push('/login');
     },
-
-    // Controle do carrossel
     scrollCarousel(direction) {
       const carousel = this.$refs.carousel;
       const cardWidth = 280;
@@ -485,44 +389,16 @@ export default {
         behavior: 'smooth' 
       });
     },
-
-    // Métodos para o modal de agendamento
     scheduleAppointment(professional) {
-      console.log('Agendando com:', professional.name);
       this.selectedProfessional = professional;
       this.showScheduleModal = true;
       this.selectedDay = null;
       this.selectedTime = null;
       this.currentDate = new Date();
-      this.availableTimes = []; // Limpa os horários ao abrir novo agendamento
+      this.availableTimes = [];
     },
-
     closeModal() {
       this.showScheduleModal = false;
-    },
-
-      this.$router.push('/login')
-    },
-    scrollCarousel(direction) {
-      const carousel = this.$refs.carousel
-      const cardWidth = 280
-      const gap = 24
-      const scrollAmount = cardWidth + gap
-      carousel.scrollBy({ 
-        left: direction === 'left' ? -scrollAmount : scrollAmount, 
-        behavior: 'smooth' 
-      })
-    },
-    scheduleAppointment(professional) {
-      this.selectedProfessional = professional
-      this.showScheduleModal = true
-      this.selectedDay = null
-      this.selectedTime = null
-      this.currentDate = new Date()
-      this.availableTimes = []
-    },
-    closeModal() {
-      this.showScheduleModal = false
     },
     prevMonth() {
       this.currentDate = new Date(
@@ -534,12 +410,6 @@ export default {
       this.selectedTime = null;
       this.availableTimes = [];
     },
-
-      )
-      this.selectedDay = null
-      this.selectedTime = null
-      this.availableTimes = []
-    },
     nextMonth() {
       this.currentDate = new Date(
         this.currentDate.getFullYear(),
@@ -550,7 +420,6 @@ export default {
       this.selectedTime = null;
       this.availableTimes = [];
     },
-
     selectDay(day) {
       if (day.isCurrentMonth && day.isAvailable) {
         this.selectedDay = day;
@@ -562,70 +431,25 @@ export default {
         alert('Este dia não possui horários disponíveis para agendamento');
       }
     },
-
     updateAvailableTimes(day) {
       if (!day || !day.isAvailable) {
         this.availableTimes = [];
         return;
       }
-      
-      // Simulação de horários disponíveis
-      if (day.day % 2 === 0) { // Dias pares - menos horários
+      if (day.day % 2 === 0) {
         this.availableTimes = ['09:00', '11:00', '15:00'];
-      } else { // Dias ímpares - mais horários
+      } else {
         this.availableTimes = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
       }
     },
-
     selectTime(time) {
       this.selectedTime = time;
     },
-
     confirmAppointment() {
       if (this.selectedDay && this.selectedTime) {
         const formattedDate = this.selectedDay.date.toLocaleDateString('pt-BR');
         alert(`Consulta agendada com ${this.selectedProfessional.name}\nData: ${formattedDate}\nHorário: ${this.selectedTime}`);
         this.closeModal();
-      }
-    }
-  }
-};
-</script>
-      )
-      this.selectedDay = null
-      this.selectedTime = null
-      this.availableTimes = []
-    },
-    selectDay(day) {
-      if (day.isCurrentMonth && day.isAvailable) {
-        this.selectedDay = day
-        this.updateAvailableTimes(day)
-      } else if (day.isCurrentMonth && !day.isAvailable) {
-        this.selectedDay = null
-        this.selectedTime = null
-        this.availableTimes = []
-        alert('Este dia não possui horários disponíveis para agendamento')
-      }
-    },
-    updateAvailableTimes(day) {
-      if (!day || !day.isAvailable) {
-        this.availableTimes = []
-        return
-      }
-      if (day.day % 2 === 0) {
-        this.availableTimes = ['09:00', '11:00', '15:00']
-      } else {
-        this.availableTimes = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00']
-      }
-    },
-    selectTime(time) {
-      this.selectedTime = time
-    },
-    confirmAppointment() {
-      if (this.selectedDay && this.selectedTime) {
-        const formattedDate = this.selectedDay.date.toLocaleDateString('pt-BR')
-        alert(`Consulta agendada com ${this.selectedProfessional.name}\nData: ${formattedDate}\nHorário: ${this.selectedTime}`)
-        this.closeModal()
       }
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div :class="styles['settings-container']">
-    <!-- Barra lateral -->
+    <!-- Barra lateral atualizada -->
     <aside :class="styles['settings-sidebar']">
       <div :class="styles['settings-logo-box']">
         <img 
@@ -14,12 +14,12 @@
           v-for="item in menuItems" 
           :key="item.label" 
           :class="[styles['settings-menu-item'], activeMenu === item.label ? styles['settings-active-menu'] : '']"
-          role="button"
-          tabindex="0"
           @click="handleMenuClick(item.label)"
+          tabindex="0"
+          role="button"
         >
-          <i :class="[item.icon]" style="margin-right: 10px;"></i>
-          {{ item.label }}
+          <i :class="item.icon" style="margin-right: 10px;"></i>
+          <span>{{ item.label }}</span>
         </li>
       </ul>
     </aside>
@@ -52,9 +52,9 @@
             v-for="option in settingsOptions" 
             :key="option.label" 
             :class="styles['settings-option-item']"
-            @click="navigateToOption(option.route)"
-            role="button"
+            @click="mostrarPopup"
             tabindex="0"
+            role="button"
           >
             <span>{{ option.label }}</span>
             <i class="fas fa-chevron-right"></i>
@@ -62,8 +62,17 @@
         </div>
       </section>
     </main>
+
+    <!-- Popup "Em Desenvolvimento" -->
+    <div v-if="popupVisivel" :class="styles['popup-overlay']">
+      <div :class="styles['popup']">
+        <h3>EM DESENVOLVIMENTO</h3>
+        <button @click="fecharPopup" :class="styles['popup-button']">Fechar</button>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <script>
 import styles from '@/assets/css/SettingsView.module.css'
@@ -75,11 +84,10 @@ export default {
       styles,
       userName: '',
       userPhoto: require('../assets/User.jpg'),
+      popupVisivel: false,
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
-        { label: 'CONSULTAS', icon: 'fas fa-calendar-check' },
-        { label: 'PROFISSIONAIS', icon: 'fas fa-user-md' },
-        { label: 'PACIENTE', icon: 'fas fa-user' },
+        { label: 'AGENDAMENTOS', icon: 'fas fa-calendar-check' },
         { label: 'MENSAGENS', icon: 'fas fa-comments' },
         { label: 'CONFIGURAÇÕES', icon: 'fas fa-cog' },
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
@@ -110,30 +118,27 @@ export default {
       this.activeMenu = label
       switch (label) {
         case 'INÍCIO':
-          this.$router.push('/home')
+          this.$router.push('/homesecretary')
           break
-        case 'CONSULTAS':
-          this.$router.push('/scheduling')
-          break
-        case 'PROFISSIONAIS':
-          this.$router.push('/professional')
-          break
-        case 'PACIENTE':
-          this.$router.push('/patient')
+        case 'AGENDAMENTOS':
+          this.$router.push('/schedulingsecretary')
           break
         case 'MENSAGENS':
-          this.$router.push('/message')
+          this.$router.push('/messagesecretary')
           break
         case 'CONFIGURAÇÕES':
-          this.$router.push('/settings')
+          this.$router.push('/settingssecretary')
           break
         case 'SAIR':
           this.logout()
           break
       }
     },
-    navigateToOption(route) {
-      this.$router.push(route);
+    mostrarPopup() {
+      this.popupVisivel = true
+    },
+    fecharPopup() {
+      this.popupVisivel = false
     },
     logout() {
       this.$router.push('/login')

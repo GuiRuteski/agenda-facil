@@ -10,7 +10,7 @@ def create_app():
     app = Flask(__name__)
 
     # Configurações da aplicação
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost:3307/agenda_facil'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:365214@localhost:3306/agenda_facil'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = 'secretao'
     app.config['JWT_IDENTITY_CLAIM'] = 'sub'  # <- IMPORTANTE para funcionar com dicionário no identity

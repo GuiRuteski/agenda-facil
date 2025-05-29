@@ -30,11 +30,7 @@
           <option value="" disabled selected>Tipo de Conta</option>
           <option value="Paciente">Paciente</option>
           <option value="Médico">Médico</option>
-<<<<<<< HEAD
           <option value="Secretario">Secretário</option>
-=======
-          <option value="secretario">Secretário(a)</option>
->>>>>>> 8b5e3b5f (Remover node_modules do repositório)
         </select>
       </div>
 
@@ -106,17 +102,18 @@ export default {
       }
 
       const cpfLimpo = this.cpf.replace(/\D/g, '')
-      if (cpfLimpo.length !== 11) {
+        if (cpfLimpo.length !== 11) {
         alert('CPF inválido. Digite os 11 dígitos.')
         return
       }
 
-      
-      };
+      const dadosBase = {
+        nome: this.nome,
+        email: this.email,
         cpf: cpfLimpo,
         senha: this.password,
         sexo: this.gender
-      }
+}
 
       let endpoint = ''
       let dados = {}
@@ -130,7 +127,7 @@ export default {
           ...dadosBase,
           especialidade: this.especialidade
         }
-      } else if (this.accountType === 'secretario') {
+      } else if (this.accountType === 'Secretario') {
         endpoint = '/funcionarios'
         dados = {
           ...dadosBase,

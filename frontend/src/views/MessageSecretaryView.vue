@@ -31,7 +31,7 @@
       <div :class="styles['message-header-row']">
         <div :class="styles['message-top-bar']">
           <div :class="styles['message-user-info']">
-            <h1>Olá, {{ userName ? userName : 'Usuário' }}!</h1>
+            <h1>Olá, {{ userName || 'Secretário(a)' }}!</h1>
             <div :class="styles['message-user-underline-box']">
               <div :class="[styles['message-user-underline'], styles.short]"></div>
               <div :class="[styles['message-user-underline'], styles.long]"></div>
@@ -50,7 +50,11 @@
       <section :class="styles['message-box']">
         <h2 :class="styles['message-box-title']">Caixa de Mensagens</h2>
         <ul :class="styles['message-list']">
-          <li v-for="(message, index) in messages" :key="index" :class="styles['message-item']">
+          <li 
+            v-for="(message, index) in messages" 
+            :key="index" 
+            :class="styles['message-item']"
+          >
             <div :class="styles['message-avatar']">
               <img :src="require('../assets/User.jpg')" alt="Avatar" />
             </div>
@@ -68,7 +72,6 @@
   </div>
 </template>
 
-
 <script>
 import styles from '@/assets/css/MessageView.module.css'
 import api from '@/services/axios'
@@ -81,9 +84,7 @@ export default {
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
-        { label: 'CONSULTAS', icon: 'fas fa-calendar-check' },
-        { label: 'PROFISSIONAIS', icon: 'fas fa-user-md' },
-        { label: 'PACIENTE', icon: 'fas fa-user' },
+        { label: 'AGENDAMENTOS', icon: 'fas fa-calendar-check' },
         { label: 'MENSAGENS', icon: 'fas fa-comments' },
         { label: 'CONFIGURAÇÕES', icon: 'fas fa-cog' },
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
@@ -135,29 +136,18 @@ export default {
   methods: {
     handleMenuClick(label) {
       this.activeMenu = label;
-      switch (label) {
-        case 'INÍCIO':
-          this.$router.push('/home');
-          break;
-        case 'CONSULTAS':
-          this.$router.push('/scheduling');
-          break;
-        case 'PROFISSIONAIS':
-          this.$router.push('/professional');
-          break;
-        case 'PACIENTE':
-          this.$router.push('/patient');
-          break;
-        case 'MENSAGENS':
-          this.$router.push('/message');
-          break;
-        case 'CONFIGURAÇÕES':
-          this.$router.push('/settings');
-          break;
-        case 'SAIR':
-          localStorage.removeItem('token');
-          this.$router.push('/login');
-          break;
+      const routes = {
+        'INÍCIO': '/homesecretary',
+        'AGENDAMENTOS': '/schedulingsecretary',
+        'MENSAGENS': '/messagesecretary',
+        'CONFIGURAÇÕES': '/settingssecretary',
+      }
+
+      if (label === 'SAIR') {
+        localStorage.removeItem('token');
+        this.$router.push('/login');
+      } else if (routes[label]) {
+        this.$router.push(routes[label]);
       }
     }
   }

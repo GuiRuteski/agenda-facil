@@ -1,8 +1,6 @@
 <template>
   <div :class="styles['scheduling-container']">
-    <!-- Barra lateral (sidebar) -->
     <aside :class="styles['scheduling-sidebar']">
-      <!-- Caixa do logotipo -->
       <div :class="styles['scheduling-logo-box']">
         <img 
           :src="require('../assets/logo.png')" 
@@ -10,8 +8,6 @@
           :class="styles['scheduling-logo']" 
         />
       </div>
-
-      <!-- Lista de menus laterais -->
       <ul :class="styles['scheduling-menu-list']">
         <li 
           v-for="item in menuItems" 
@@ -26,8 +22,7 @@
         </li>
       </ul>
     </aside>
-    
-    <!-- Conteúdo principal da página -->
+
     <main :class="styles['scheduling-main-content']">
       <div :class="styles['scheduling-header-row']">
         <div :class="styles['scheduling-top-bar']">
@@ -47,31 +42,48 @@
         </div>     
       </div>
 
-      <!-- Seção de Consultas -->
       <div :class="styles['scheduling-content']">
-        <h2 :class="styles['scheduling-section-title']">Consultas</h2>
-        
+        <h2 :class="styles['scheduling-section-title']">Minhas Consultas</h2>
+
         <div :class="styles['scheduling-table-container']">
           <table :class="styles['scheduling-table']">
             <thead>
               <tr>
-                <th>Profissional</th>
-                <th>Especialização</th>
+                <th>Paciente</th>
                 <th>Data</th>
                 <th>Hora</th>
                 <th>Status</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(consulta, index) in consultas" :key="index">
-                <td>{{ consulta.profissional }}</td>
-                <td>{{ consulta.especializacao }}</td>
+                <td>{{ consulta.paciente }}</td>
                 <td>{{ consulta.data }}</td>
                 <td>{{ consulta.hora }}</td>
                 <td>
                   <span :class="[styles['scheduling-status'], styles[consulta.status.toLowerCase()]]">
                     {{ consulta.status }}
                   </span>
+                </td>
+                <td>
+                <template v-if="consulta.status === 'Pendente'">
+                <button
+                    @click="confirmarAgendamento(index)"
+                    :class="[styles['action-button'], styles['confirm']]"
+                >
+                    <i class="fas fa-check"></i> Confirmar
+                </button>
+                </template>
+
+                <template v-if="['Pendente', 'Agendado'].includes(consulta.status)">
+                <button
+                    @click="excluirAgendamento(index)"
+                    :class="[styles['action-button'], styles['delete']]"
+                >
+                <i class="fas fa-times"></i> Excluir
+                </button>
+                </template>
                 </td>
               </tr>
             </tbody>
@@ -83,7 +95,7 @@
 </template>
 
 <script>
-import styles from '@/assets/css/SchedulingView.module.css'
+import styles from '@/assets/css/SchedulingSecretaryView.module.css'
 import api from '@/services/axios'
 
 export default {
@@ -94,46 +106,33 @@ export default {
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
-        { label: 'CONSULTAS', icon: 'fas fa-calendar-check' },
-        { label: 'PROFISSIONAIS', icon: 'fas fa-user-md' },
-        { label: 'PACIENTE', icon: 'fas fa-user' },
+        { label: 'AGENDAMENTOS', icon: 'fas fa-calendar-check' },
         { label: 'MENSAGENS', icon: 'fas fa-comments' },
         { label: 'CONFIGURAÇÕES', icon: 'fas fa-cog' },
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
-      activeMenu: 'CONSULTAS',
+      activeMenu: 'AGENDAMENTOS',
       consultas: [
         {
-          profissional: 'Dr. João Pereira',
-          especializacao: 'Cardiologista',
+          paciente: 'Carlos Lima',
           data: '15/04',
           hora: '09:00',
           status: 'Agendado'
         },
         {
-          profissional: 'Dra. Ana Oliveira',
-          especializacao: 'Ortopedista',
+          paciente: 'Fernanda Souza',
           data: '15/04',
           hora: '10:30',
-          status: 'Agendado'
+          status: 'Pendente'
         },
         {
-          profissional: 'Dr. João Pereira',
-          especializacao: 'Cardiologista',
+          paciente: 'Paulo Mendes',
           data: '10/03',
           hora: '15:30',
           status: 'Finalizado'
         },
         {
-          profissional: 'Dr. João Pereira',
-          especializacao: 'Cardiologista',
-          data: '08/03',
-          hora: '12:30',
-          status: 'Cancelado'
-        },
-        {
-          profissional: 'Teste de tabela',
-          especializacao: 'Cardiologista',
+          paciente: 'Juliana Dias',
           data: '08/03',
           hora: '12:30',
           status: 'Cancelado'
@@ -157,22 +156,16 @@ export default {
       this.activeMenu = label
       switch (label) {
         case 'INÍCIO':
-          this.$router.push('/home')
+          this.$router.push('/homesecretary')
           break
-        case 'CONSULTAS':
-          this.$router.push('/scheduling')
-          break
-        case 'PROFISSIONAIS':
-          this.$router.push('/professional')
-          break
-        case 'PACIENTE':
-          this.$router.push('/patient')
+        case 'AGENDAMENTOS':
+          this.$router.push('/schedulingsecretary')
           break
         case 'MENSAGENS':
-          this.$router.push('/message')
+          this.$router.push('/messagesecretary')
           break
         case 'CONFIGURAÇÕES':
-          this.$router.push('/settings')
+          this.$router.push('/settingssecretary')
           break
         case 'SAIR':
           this.logout()
@@ -181,7 +174,13 @@ export default {
     },
     logout() {
       this.$router.push('/login')
+    },
+    confirmarAgendamento(index) {
+      this.consultas[index].status = 'Agendado'
+    },
+    excluirAgendamento(index) {
+      this.consultas.splice(index, 1)
     }
   }
-};
+}
 </script>
