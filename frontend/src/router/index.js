@@ -91,7 +91,26 @@ const routes = [
     name: 'SettingsScretary',
     component: () => import('@/views/SettingsSecretaryView.vue')
   },
-  
+  {
+    path: '/homedoctor',
+    name: 'HomeDoctor',
+    component: () => import('@/views/HomeDoctorView.vue')
+  },
+  {
+    path: '/schedulingdoctor',
+    name: 'SchedulingDoctor',
+    component: () => import('@/views/SchedulingDoctorView.vue')
+  },
+  {
+    path: '/messagedoctor',
+    name: 'MessageDoctor',
+    component: () => import('@/views/MessageDoctorView.vue')
+  },
+  {
+    path: '/settingsdoctor',
+    name: 'SettingsDoctor',
+    component: () => import('@/views/SettingsDoctorView.vue')
+  },
 ]
 
 const router = createRouter({
