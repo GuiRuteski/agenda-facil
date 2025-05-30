@@ -109,7 +109,7 @@ const routes = [
   {
     path: '/settingsdoctor',
     name: 'SettingsDoctor',
-    component: () => import('@/views/SettingsDoctorView.vue')
+    component: () => import('@/views/Settingscd aDoctorView.vue')
   },
 ]
 

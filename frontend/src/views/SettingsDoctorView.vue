@@ -120,7 +120,7 @@ export default {
           this.$router.push('/homedoctor')
           break
         case 'CONSULTAS':
-          this.$router.push('/consultsdoctor')
+          this.$router.push('/schedulingdoctor')
           break
         case 'MENSAGENS':
           this.$router.push('/messagesdoctor')
