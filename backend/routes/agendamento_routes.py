@@ -1,92 +1,46 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request, jsonify
+from app.extensions import db
+from app.models.agendamento import Agendamento
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from datetime import datetime
 
-agendamento_bp = Blueprint('agendamento', __name__)
+agendamento_bp = Blueprint('agendamentos', __name__)
 
-agendamentos = [
-    {"id": 1, "descricao": "Consulta com Dr. João"}
-]
-
-@agendamento_bp.route('/agendamentos', methods=['GET'])
+@agendamento_bp.route('', methods=['GET'])
+@jwt_required()
 def listar_agendamentos():
-    """
-    Lista de agendamentos.
-    ---
-    tags:
-      - Agendamentos
-    responses:
-      200:
-        description: Agendamentos encontrados
-    """
-    return jsonify({"agendamentos": agendamentos})
+    claims = get_jwt()
+    user_id = int(get_jwt_identity())
+    tipo = claims.get('tipo')
+
+    if tipo == 'paciente':
+        agendamentos = Agendamento.query.filter_by(paciente_id=user_id).all()
+    elif tipo == 'medico':
+        agendamentos = Agendamento.query.filter_by(medico_id=user_id).all()
+    else:
+        agendamentos = Agendamento.query.all()
+
+    return jsonify([
+        {
+            'id': ag.id,
+            'paciente_id': ag.paciente_id,
+            'medico_id': ag.medico_id,
+            'data_hora': ag.data_hora.isoformat(),
+            'status': ag.status
+        }
+        for ag in agendamentos
+    ])
 
 @agendamento_bp.route('/agendamentos', methods=['POST'])
+@jwt_required()
 def criar_agendamento():
-    """
-    Cria um novo agendamento.
-    ---
-    tags:
-      - Agendamentos
-    parameters:
-        - in: body
-          name: body
-          schema:
-            type: object
-            properties:
-              descricao:
-                type: string
-    responses:
-        201:
-          description: Agendamento criado
-    """
     data = request.get_json()
-    novo = {"id": len(agendamentos)+1, "descricao": data["descricao"]}
-    agendamentos.append(novo)
-    return jsonify(novo), 201
-
-@agendamento_bp.route('/agendamentos/<int:id>', methods=['PUT'])
-def atualizar_agendamento(id):
-    """
-    Atualiza um agendamento.
-    ---
-    tags:
-      - Agendamentos
-    parameters:
-        - in: path
-          name: id
-          type: integer
-        - in: body
-          name: body
-          schema:
-            type: object
-            properties:
-              descricao:
-                type: string
-    responses:
-        200:
-          description: Agendamento atualizado
-    """
-    data = request.get_json()
-    for a in agendamentos:
-        if a["id"] == id:
-            a["descricao"] = data["descricao"]
-            return jsonify(a)
-    return jsonify({"erro": "Agendamento não encontrado"}), 404
-
-@agendamento_bp.route('/agendamentos/<int:id>', methods=['DELETE'])
-def deletar_agendamento(id):
-    """
-    Deleta um agendamento.
-    ---
-    tags:
-      - Agendamentos
-    parameters:
-        - in: path
-          name: id
-          type: integer
-    responses:
-        200:
-          description: Agendamento removido
-    """
-    global agendamentos
-    agendamentos = [a for a in agendamentos if a["id"] != id]
-    return jsonify({"mensagem": "Agendamento removido"})
+    novo = Agendamento(
+        paciente_id=data['paciente_id'],
+        medico_id=data['medico_id'],
+        data_hora=datetime.fromisoformat(data['data_hora']),
+        status='Agendado'
+    )
+    db.session.add(novo)
+    db.session.commit()
+    return jsonify({'mensagem': 'Agendamento criado com sucesso'}), 201

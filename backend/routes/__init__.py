@@ -1,7 +1,9 @@
 from flask import Blueprint
+from routes.agendamento_routes import agendamento_bp
 
 # Blueprint principal agrupando os outros
 routes_bp = Blueprint('routes', __name__)
+routes_bp.register_blueprint(agendamento_bp)
 
 # Importa os blueprints individuais
 from routes.user import user_bp

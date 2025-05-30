@@ -35,7 +35,10 @@ def login():
         }
     )
 
-    return jsonify(access_token=token), 200
+    return jsonify(
+    access_token=token,
+    tipo=tipo
+), 200
 
 
 @auth_bp.route('/me', methods=['GET'])

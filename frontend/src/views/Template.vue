@@ -54,6 +54,7 @@
 import styles from '@/assets/css/SettingsView.module.css';
 
 export default {
+  name: 'SettingsTemplate',
   data() {
     return {
       styles,

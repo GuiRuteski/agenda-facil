@@ -1,9 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import CreateAppointment from '../views/CreateAppointment.vue'
+
+
 
 const routes = [
   {
     path: '/',
     redirect: '/login'
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: HomeView
+  },
+  {
+    path: '/create-appointment',
+    name: 'CreateAppointment',
+    component: CreateAppointment
   },
   {
     path: '/login',
@@ -95,7 +109,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
