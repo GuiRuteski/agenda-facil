@@ -34,15 +34,14 @@ export default {
       senha: this.password
     })
 
-    const token = response.data.access_token
     const tipoConta = response.data.tipoConta || response.data.tipo // ajuste conforme o backend
 
-    localStorage.setItem('token', token)
+    localStorage.setItem('token', response.data.access_token)
     localStorage.setItem('tipoConta', tipoConta)
 
-    if (tipoConta === 'Paciente') {
-      this.$router.push('/home')
-    } else if (tipoConta === 'RECEPCIONISTA') {
+    if (tipoConta === 'paciente') {
+      this.$router.push('/home')  
+    } else if (tipoConta === 'recepcionista') {
       this.$router.push('/homesecretary')
     } else {
       this.$router.push('/home') // padrão

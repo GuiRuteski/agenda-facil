@@ -2,9 +2,11 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flasgger import Swagger
+from flask_migrate import Migrate
 
 from app.extensions import db
 from routes import routes_bp  # importa o grupo de blueprints
+from routes.auth_routes import auth_bp
 
 def create_app():
     app = Flask(__name__)
@@ -28,9 +30,12 @@ def create_app():
 
     # Documentação automática com Swagger
     Swagger(app)
+    
+    migrate = Migrate(app, db)
 
     # Registro do blueprint principal (todos agrupados no routes_bp)
     app.register_blueprint(routes_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp)
 
     # Rota de teste
     @app.route('/hello')

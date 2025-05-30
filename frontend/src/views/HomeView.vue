@@ -71,11 +71,23 @@
         </section>
 
         <section :class="styles['home-agenda-section']">
-          <h2>Agenda</h2>
-          <div>
-            <p>[Agenda - Em desenvolvimento]</p>
-          </div>
-        </section>
+  <h2>Agenda</h2>
+  <div v-if="agendamentos.length === 0">
+    <p>Nenhum agendamento encontrado.</p>
+  </div>
+  <ul v-else :class="styles['home-agenda-list']">
+    <li 
+      v-for="item in agendamentos" 
+      :key="item.id" 
+      :class="styles['home-agenda-item']"
+    >
+      <strong>Data:</strong> {{ new Date(item.data_hora).toLocaleDateString() }}<br>
+      <strong>Hora:</strong> {{ new Date(item.data_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}<br>
+      <strong>Status:</strong> {{ item.status }}
+    </li>
+  </ul>
+</section>
+
       </div>
     </main>
   </div>
@@ -90,6 +102,7 @@ export default {
     return {
       styles,
       user: {},
+      agendamentos: [],
       userPhoto: require('../assets/User.jpg'),
       menuItems: [
         { label: 'INÍCIO', icon: 'fas fa-home' },
@@ -101,13 +114,14 @@ export default {
         { label: 'SAIR', icon: 'fas fa-sign-out-alt' }
       ],
       activeMenu: 'INÍCIO',
-      messages: [] // Simulação de mensagens
+      messages: []
     }
   },
   async created() {
     try {
       const res = await api.get('/auth/me')
       this.user = res.data
+      this.loadAgendamentos()
     } catch (err) {
       console.error('Erro ao carregar usuário:', err)
       alert('Sessão expirada ou inválida. Faça login novamente.')
@@ -115,6 +129,14 @@ export default {
     }
   },
   methods: {
+    async loadAgendamentos() {
+      try {
+        const response = await api.get('/agendamentos')
+        this.agendamentos = response.data
+      } catch (error) {
+        console.error('Erro ao buscar agendamentos:', error)
+      }
+    },
     handleMenuClick(label) {
       this.activeMenu = label
       const routeMap = {

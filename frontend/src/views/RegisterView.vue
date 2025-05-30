@@ -27,11 +27,12 @@
       <div :class="styles['register-form-row']">
         <input v-model="password" type="password" placeholder="Senha" :class="styles['register-input']" required />
         <select v-model="accountType" :class="styles['register-select']" required>
-          <option value="" disabled selected>Tipo de Conta</option>
-          <option value="Paciente">Paciente</option>
-          <option value="Médico">Médico</option>
-          <option value="Secretario">Secretário</option>
-        </select>
+        <option value="" disabled selected>Tipo de Conta</option>
+        <option value="paciente">Paciente</option>
+        <option value="medico">Médico</option>
+        <option value="recepcionista">Recepcionista</option>
+      </select>
+
       </div>
 
       <!-- Confirmar senha e sexo -->
@@ -118,16 +119,16 @@ export default {
       let endpoint = ''
       let dados = {}
 
-      if (this.accountType === 'Paciente') {
+      if (this.accountType === 'paciente') {
         endpoint = '/pacientes'
         dados = dadosBase
-      } else if (this.accountType === 'Médico') {
+      } else if (this.accountType === 'medico') {
         endpoint = '/medicos'
         dados = {
           ...dadosBase,
           especialidade: this.especialidade
         }
-      } else if (this.accountType === 'Secretario') {
+      } else if (this.accountType === 'recepcionista') {
         endpoint = '/funcionarios'
         dados = {
           ...dadosBase,
